@@ -184,7 +184,7 @@
     <!-- Header -->
     <header class="sticky top-0 z-10" style="background-color: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-xl font-bold" style="color: #1f2937;">CV Builder Pro</h1>
+            <h1 class="text-xl font-bold" style="color: #1f2937;">Create CV</h1>
             <div class="flex items-center gap-2">
                 {#if isMobile}
                     <button 
