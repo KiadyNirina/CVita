@@ -9,9 +9,12 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.27.3",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@tsconfig/svelte": "^5.0.4",
 		"svelte": "^4.2.7",
+		"svelte-preprocess": "^6.0.3",
+		"typescript": "^5.9.2",
 		"vite": "^5.0.3"
 	},
 	"type": "module",
