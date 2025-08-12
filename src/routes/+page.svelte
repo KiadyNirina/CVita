@@ -65,7 +65,7 @@
         replaceOklchColors(content);
 
         const options = {
-            margin: [0.5, 0.5],
+            margin: 0,
             filename: 'cv-professionnel.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
@@ -621,7 +621,7 @@
                 <div class="lg:w-2/3">
                     <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: #ffffff;">
                         <div bind:this={content} class="leading-relaxed" style="color: #374151;">
-                            <div class="flex items-center p-8" style="background-color: #1e293b; color: #ffffff;">
+                            <div class="flex items-center py-8 px-16" style="background-color: #1e293b; color: #ffffff;">
                                 {#if image}
                                     <img src={image} alt="Photo profil" class="w-28 h-28 rounded-full object-cover mr-8" style="border: 4px solid #334155;">
                                 {/if}
@@ -631,7 +631,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-x-8">
+                            <div class="py-8 px-16 grid grid-cols-1 md:grid-cols-3 gap-x-8">
                                 <div class="md:col-span-2">
                                     {#if summary}
                                     <section class="mb-8">
@@ -646,7 +646,7 @@
                                         <div class="relative pl-6 space-y-6" style="border-left: 2px solid #e2e8f0;">
                                             {#each experiences as exp}
                                                 <div class="relative">
-                                                    <div class="absolute -left-[33px] top-1 h-3 w-3 rounded-full border-2" style="background-color: #2563eb; border-color: #ffffff;"></div>
+                                                    <div class="absolute -left-[31px] top-1 h-3 w-3 rounded-full border-2" style="background-color: #2563eb; border-color: #ffffff;"></div>
                                                     <p class="text-xs" style="color: #6b7280;">{exp.startDate} - {exp.current ? "Aujourd'hui" : exp.endDate}</p>
                                                     <h4 class="font-bold text-md" style="color: #1e293b;">{exp.position}</h4>
                                                     <p class="font-semibold text-sm" style="color: #475569;">{exp.company} - {exp.location}</p>
