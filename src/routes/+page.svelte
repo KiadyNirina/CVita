@@ -65,7 +65,7 @@
         replaceOklchColors(content);
 
         const options = {
-            margin: [0.5, 0.5],
+            margin: 0,
             filename: 'cv-professionnel.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
@@ -621,7 +621,7 @@
                 <div class="lg:w-2/3">
                     <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: #ffffff;">
                         <div bind:this={content} class="leading-relaxed" style="color: #374151;">
-                            <div class="flex items-center p-8" style="background-color: #1e293b; color: #ffffff;">
+                            <div class="flex items-center py-8 px-16" style="background-color: #1e293b; color: #ffffff;">
                                 {#if image}
                                     <img src={image} alt="Photo profil" class="w-28 h-28 rounded-full object-cover mr-8" style="border: 4px solid #334155;">
                                 {/if}
@@ -631,7 +631,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-x-8">
+                            <div class="py-8 px-16 grid grid-cols-1 md:grid-cols-3 gap-x-8">
                                 <div class="md:col-span-2">
                                     {#if summary}
                                     <section class="mb-8">
