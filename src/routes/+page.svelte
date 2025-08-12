@@ -646,7 +646,7 @@
                                         <div class="relative pl-6 space-y-6" style="border-left: 2px solid #e2e8f0;">
                                             {#each experiences as exp}
                                                 <div class="relative">
-                                                    <div class="absolute -left-[33px] top-1 h-3 w-3 rounded-full border-2" style="background-color: #2563eb; border-color: #ffffff;"></div>
+                                                    <div class="absolute -left-[31px] top-1 h-3 w-3 rounded-full border-2" style="background-color: #2563eb; border-color: #ffffff;"></div>
                                                     <p class="text-xs" style="color: #6b7280;">{exp.startDate} - {exp.current ? "Aujourd'hui" : exp.endDate}</p>
                                                     <h4 class="font-bold text-md" style="color: #1e293b;">{exp.position}</h4>
                                                     <p class="font-semibold text-sm" style="color: #475569;">{exp.company} - {exp.location}</p>
