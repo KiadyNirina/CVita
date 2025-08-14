@@ -19,6 +19,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"html2pdf.js": "^0.10.2"
+		"html2pdf.js": "^0.10.2",
+		"jspdf": "^3.0.1",
+		"jspdf-autotable": "^5.0.2"
 	}
 }
