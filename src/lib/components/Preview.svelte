@@ -27,27 +27,30 @@
     };
 </script>
 
-<div class={`bg-white ${fullMode ? 'p-8 max-w-4xl' : 'p-6 max-w-2xl'} rounded-xl shadow-lg mx-auto font-sans text-gray-800 leading-relaxed transition-all duration-300 hover:shadow-xl`}>
+<div
+    id="cv-preview"
+    class="bg-white w-[210mm] min-h-[297mm] p-[15mm] mx-auto font-sans text-gray-800 leading-relaxed shadow-lg rounded-xl transition-all duration-300 hover:shadow-xl border border-gray-400"
+>
     <!-- En-tête -->
-    <header class="mb-8 pb-6 border-b border-gray-100">
-        <div class="flex items-center justify-center gap-6">
+    <header class="mb-6 pb-4 border-b border-gray-100">
+        <div class="flex items-center justify-center gap-4">
             {#if $cvStore.personalInfo.image}
                 <img 
                     src={$cvStore.personalInfo.image} 
                     alt="Profile" 
-                    class="w-24 h-24 rounded-full object-cover border-4 border-blue-100 shadow-sm transition-transform duration-300 hover:scale-105"
+                    class="w-30 rounded-full object-cover border-4 border-blue-100 shadow-sm transition-transform duration-300 hover:scale-105"
                 />
             {/if}
-            <div class="text-center">
-                <h1 class="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
+            <div class="pl-10 text-left">
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-1 tracking-tight">
                     {$cvStore.personalInfo.name}
                 </h1>
                 {#if $cvStore.personalInfo.cvTitle}
-                    <h2 class="text-xl font-medium text-blue-600 mb-3 italic">
+                    <h2 class="text-lg font-medium text-blue-600 mb-2 italic">
                         {$cvStore.personalInfo.cvTitle}
                     </h2>
                 {/if}
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-gray-600 text-sm">
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-600 text-sm">
                     {#if $cvStore.personalInfo.email}
                         <span class="flex items-center hover:text-blue-500 transition-colors">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,19 +99,19 @@
 
     <!-- Résumé professionnel -->
     {#if $cvStore.professionalSummary}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Profil Professionnel</h2>
-            <p class="text-gray-700 whitespace-pre-line leading-7">{$cvStore.professionalSummary}</p>
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Profil Professionnel</h2>
+            <p class="text-gray-700 whitespace-pre-line leading-7 text-sm">{$cvStore.professionalSummary}</p>
         </section>
     {/if}
 
     <!-- Expérience professionnelle -->
     {#if $cvStore.workExperience.length > 0}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Expérience Professionnelle</h2>
-            <div class="space-y-6">
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Expérience Professionnelle</h2>
+            <div class="space-y-4">
                 {#each $cvStore.workExperience as exp}
-                    <div class="pl-4 border-l-2 border-blue-200 transition-all duration-200 hover:border-blue-400">
+                    <div class="pl-4 border-l-2 border-blue-400">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
                             <h3 class="text-lg font-semibold text-gray-900">
                                 {exp.jobTitle} 
@@ -123,7 +126,7 @@
                             </div>
                         </div>
                         {#if exp.description}
-                            <div class="mt-2 text-gray-700 whitespace-pre-line pl-2 leading-6">
+                            <div class="mt-2 text-gray-700 whitespace-pre-line pl-2 leading-6 text-sm">
                                 {exp.description}
                             </div>
                         {/if}
@@ -135,11 +138,11 @@
 
     <!-- Formation -->
     {#if $cvStore.education.length > 0}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Formation</h2>
-            <div class="space-y-4">
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Formation</h2>
+            <div class="space-y-3">
                 {#each $cvStore.education as edu}
-                    <div class="pl-4 border-l-2 border-blue-200 transition-all duration-200 hover:border-blue-400">
+                    <div class="pl-4 border-l-2 border-blue-400">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
                             <h3 class="font-semibold text-gray-900">
                                 {edu.degree} 
@@ -164,14 +167,14 @@
 
     <!-- Compétences -->
     {#if $cvStore.skills.length > 0}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Compétences</h2>
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Compétences</h2>
             <div class="flex flex-wrap gap-2">
                 {#each $cvStore.skills as skill}
-                    <span class="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800 flex items-center transition-colors duration-200 hover:bg-blue-100">
-                        {#if skill.level}
+                    <span class="bg-gray-300 px-3 py-1 rounded-full text-sm text-gray-800 flex items-center transition-colors duration-200 hover:bg-blue-100">
+                        <!-- {#if skill.level}
                             <span class="mr-2 text-xs text-gray-500">{skill.level}/5</span>
-                        {/if}
+                        {/if} -->
                         {skill.name}
                     </span>
                 {/each}
@@ -181,8 +184,8 @@
 
     <!-- Langues -->
     {#if $cvStore.languages.length > 0}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Langues</h2>
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Langues</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {#each $cvStore.languages as lang}
                     <div class="flex items-center">
@@ -203,9 +206,9 @@
 
     <!-- Projets -->
     {#if $cvStore.projects.length > 0}
-        <section class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-wide">Projets</h2>
-            <div class="space-y-4">
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-1 mb-2 tracking-wide">Projets</h2>
+            <div class="space-y-3">
                 {#each $cvStore.projects as project}
                     <div>
                         <h3 class="font-semibold text-gray-900">

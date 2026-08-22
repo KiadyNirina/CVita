@@ -4,77 +4,90 @@
 
     let fileInput;
 
-    const REQUIRED_ARRAY_FIELDS = ['workExperience', 'education', 'skills', 'languages'];
-    const PERSONAL_INFO_FIELDS = ['cvTitle', 'name', 'email', 'phone', 'address', 'image', 'linkedin', 'github'];
-
-    // ==============================
-    // UTILITAIRES
-    // ==============================
-
-    function downloadBlob(blob, filename) {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
-
-    function getFileName() {
-        const name = $cvStore.personalInfo?.name?.trim();
-        return (name || 'Sans_nom')
-            .replace(/[<>:"/\\|?*\x00-\x1F]/g, '')
-            .replace(/\s+/g, '_');
-    }
-
-    function resetFileInput(input) {
-        if (input) {
-            input.value = '';
-        }
-    }
-
-    // ==============================
-    // EXPORT PDF
-    // ==============================
-
     async function exportPDF() {
         try {
-            const pdfBlob = await generatePDF($cvStore);
-            downloadBlob(pdfBlob, `CV_${getFileName()}.pdf`);
+            const preview = document.querySelector('#cv-preview');
+
+            if (!preview) {
+                throw new Error('Preview introuvable.');
+            }
+
+            const pdfBlob = await generatePDF(preview);
+
+            const url = URL.createObjectURL(pdfBlob);
+
+            const a = document.createElement('a');
+
+            const name = $cvStore.personalInfo.name?.trim()
+                ? $cvStore.personalInfo.name.trim().replace(/\s+/g, '_')
+                : 'CV';
+
+            a.href = url;
+            a.download = `CV_${name}.pdf`;
+
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+
         } catch (error) {
-            console.error('Échec de génération du PDF:', error);
+            console.error('Impossible de générer le PDF :', error);
+
+            alert(
+                `Impossible de générer le PDF.\n\n${
+                    error?.message || error
+                }`
+            );
         }
     }
-
-    // ==============================
-    // EXPORT JSON
-    // ==============================
 
     function exportJSON() {
         try {
             const dataStr = JSON.stringify($cvStore, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            downloadBlob(blob, `CV_${getFileName()}.json`);
+
+            const blob = new Blob(
+                [dataStr],
+                {
+                    type: 'application/json;charset=utf-8'
+                }
+            );
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            const name = $cvStore.personalInfo.name?.trim()
+                ? $cvStore.personalInfo.name.trim().replace(/\s+/g, '_')
+                : 'CV';
+
+            a.href = url;
+            a.download = `CV_${name}.json`;
+
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+
         } catch (error) {
-            console.error('Échec de sauvegarde JSON:', error);
+            console.error(
+                "Erreur lors de l'export JSON :",
+                error
+            );
         }
     }
 
-    // ==============================
-    // IMPORT JSON
-    // ==============================
-
-    function openFilePicker() {
+    function openImportDialog() {
         fileInput?.click();
     }
 
-    function handleFileImport(event) {
-        const input = event.currentTarget;
-        const file = input?.files?.[0];
+    function handleImport(event) {
+        const file = event.currentTarget.files?.[0];
 
         if (!file) {
             return;
@@ -82,95 +95,188 @@
 
         if (!file.name.toLowerCase().endsWith('.json')) {
             alert('Veuillez sélectionner un fichier JSON.');
-            resetFileInput(input);
+            event.currentTarget.value = '';
             return;
         }
 
         const reader = new FileReader();
 
-        reader.onload = () => {
+        reader.onload = (e) => {
             try {
-                if (typeof reader.result !== 'string' || !reader.result.trim()) {
-                    throw new Error('Le fichier JSON est vide.');
+                const content = e.target?.result;
+
+                if (typeof content !== 'string') {
+                    throw new Error(
+                        'Impossible de lire le contenu du fichier.'
+                    );
                 }
 
-                const importedData = JSON.parse(reader.result);
+                const importedData = JSON.parse(content);
 
-                if (!isValidCVData(importedData)) {
-                    throw new Error('Le fichier ne correspond pas au format d’un CV valide.');
-                }
+                validateCVData(importedData);
 
-                cvStore.set(normalizeCVData(importedData));
+                /*
+                 * Remplace complètement les données actuelles
+                 * par celles du fichier JSON.
+                 */
+                cvStore.set({
+                    ...createEmptyCV(),
+                    ...importedData,
+
+                    personalInfo: {
+                        ...createEmptyCV().personalInfo,
+                        ...(importedData.personalInfo || {})
+                    },
+
+                    workExperience: Array.isArray(
+                        importedData.workExperience
+                    )
+                        ? importedData.workExperience
+                        : [],
+
+                    education: Array.isArray(importedData.education)
+                        ? importedData.education
+                        : [],
+
+                    skills: Array.isArray(importedData.skills)
+                        ? importedData.skills
+                        : [],
+
+                    languages: Array.isArray(importedData.languages)
+                        ? importedData.languages
+                        : [],
+
+                    certifications: Array.isArray(
+                        importedData.certifications
+                    )
+                        ? importedData.certifications
+                        : [],
+
+                    projects: Array.isArray(importedData.projects)
+                        ? importedData.projects
+                        : []
+                });
+
+                console.log(
+                    'CV importé avec succès :',
+                    importedData
+                );
+
                 alert('CV importé avec succès !');
+
             } catch (error) {
-                console.error('Erreur lors de l’importation JSON:', error);
-                alert(`Impossible d'importer le CV.\n\n${error.message}`);
+                console.error(
+                    "Erreur lors de l'importation :",
+                    error
+                );
+
+                alert(
+                    `Erreur lors de l'importation : ${
+                        error?.message || error
+                    }`
+                );
             } finally {
-                resetFileInput(input);
+                /*
+                 * Permet de sélectionner à nouveau le même fichier.
+                 */
+                event.currentTarget.value = '';
             }
         };
 
         reader.onerror = () => {
-            console.error('Erreur FileReader:', reader.error);
-            alert('Impossible de lire le fichier JSON.');
-            resetFileInput(input);
-        };
+            console.error(
+                'FileReader error:',
+                reader.error
+            );
 
-        reader.onabort = () => {
-            console.error('Lecture du fichier interrompue.');
-            alert('La lecture du fichier a été interrompue.');
-            resetFileInput(input);
+            alert(
+                'Impossible de lire le fichier JSON.'
+            );
+
+            event.currentTarget.value = '';
         };
 
         reader.readAsText(file, 'UTF-8');
     }
 
-    // ==============================
-    // VALIDATION
-    // ==============================
-
-    function isValidCVData(data) {
-        if (!data || typeof data !== 'object' || Array.isArray(data)) {
-            return false;
+    function validateCVData(data) {
+        if (
+            !data ||
+            typeof data !== 'object' ||
+            Array.isArray(data)
+        ) {
+            throw new Error(
+                'Le fichier ne contient pas un objet JSON valide.'
+            );
         }
 
-        if (!data.personalInfo || typeof data.personalInfo !== 'object' || Array.isArray(data.personalInfo)) {
-            return false;
+        if (
+            data.personalInfo !== undefined &&
+            (
+                typeof data.personalInfo !== 'object' ||
+                Array.isArray(data.personalInfo)
+            )
+        ) {
+            throw new Error(
+                'La propriété "personalInfo" est invalide.'
+            );
         }
 
-        if (typeof data.professionalSummary !== 'string') {
-            return false;
-        }
+        const arrayFields = [
+            'workExperience',
+            'education',
+            'skills',
+            'languages',
+            'certifications',
+            'projects'
+        ];
 
-        return REQUIRED_ARRAY_FIELDS.every((field) => Array.isArray(data[field]));
+        for (const field of arrayFields) {
+            if (
+                data[field] !== undefined &&
+                !Array.isArray(data[field])
+            ) {
+                throw new Error(
+                    `La propriété "${field}" doit être un tableau.`
+                );
+            }
+        }
     }
 
-    // ==============================
-    // NORMALISATION
-    // ==============================
-
-    function normalizeCVData(data) {
-        const personalInfo = data.personalInfo ?? {};
-
+    function createEmptyCV() {
         return {
-            personalInfo: Object.fromEntries(
-                PERSONAL_INFO_FIELDS.map((field) => [field, personalInfo[field] ?? ''])
-            ),
-            professionalSummary: data.professionalSummary ?? '',
-            workExperience: Array.isArray(data.workExperience) ? data.workExperience : [],
-            education: Array.isArray(data.education) ? data.education : [],
-            skills: Array.isArray(data.skills) ? data.skills : [],
-            languages: Array.isArray(data.languages) ? data.languages : [],
-            certifications: Array.isArray(data.certifications) ? data.certifications : [],
-            projects: Array.isArray(data.projects) ? data.projects : []
+            personalInfo: {
+                cvTitle: '',
+                name: '',
+                email: '',
+                phone: '',
+                address: '',
+                image: '',
+                linkedin: '',
+                github: ''
+            },
+
+            professionalSummary: '',
+
+            workExperience: [],
+
+            education: [],
+
+            skills: [],
+
+            languages: [],
+
+            certifications: [],
+
+            projects: []
         };
     }
 </script>
 
 <div class="flex flex-wrap gap-4 mt-6">
+
     <!-- Export PDF -->
     <button
-        type="button"
         on:click={exportPDF}
         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
     >
@@ -179,7 +285,6 @@
 
     <!-- Export JSON -->
     <button
-        type="button"
         on:click={exportJSON}
         class="border border-blue-600 text-blue-600 px-4 py-2 rounded hover:bg-blue-50"
     >
@@ -188,19 +293,19 @@
 
     <!-- Import JSON -->
     <button
-        type="button"
-        on:click={openFilePicker}
-        class="border border-green-600 text-green-600 px-4 py-2 rounded hover:bg-green-50"
+        on:click={openImportDialog}
+        class="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100"
     >
         Importer un JSON
     </button>
 
-    <!-- File input caché -->
+    <!-- Input caché -->
     <input
         bind:this={fileInput}
         type="file"
         accept=".json,application/json"
         class="hidden"
-        on:change={handleFileImport}
+        on:change={handleImport}
     />
+
 </div>
