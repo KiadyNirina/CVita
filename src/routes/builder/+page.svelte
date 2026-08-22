@@ -30,11 +30,13 @@
                     </p>
                 </div>
                 <div class="hidden lg:block">
+                {#if activeTab === 'edit' || activeTab === 'preview'}
                     <ExportButtons />
+                {/if}
                 </div>
             </header>
 
-            <nav class="flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
+            <nav class="md:flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
                 <button
                     type="button"
                     class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
@@ -179,7 +181,9 @@
             {/if}
         </div>
     </div>
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-neutral-200 p-3 flex justify-center gap-4 lg:hidden z-20">
-        <ExportButtons />
-    </div>
+    {#if activeTab === 'edit' || activeTab === 'preview'}
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-neutral-200 p-3 flex justify-center gap-4 lg:hidden z-20">
+            <ExportButtons />
+        </div>
+    {/if}
 </div>
