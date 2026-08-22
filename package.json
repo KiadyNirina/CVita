@@ -19,8 +19,12 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@iconify/svelte": "^4.2.0",
+		"dom-to-image": "^2.6.0",
+		"html2canvas": "^1.4.1",
+		"html2canvas-pro": "^2.3.9",
 		"html2pdf.js": "^0.10.2",
-		"jspdf": "^3.0.1",
+		"jspdf": "^3.0.4",
 		"jspdf-autotable": "^5.0.2"
 	}
 }

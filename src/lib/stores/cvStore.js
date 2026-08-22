@@ -8,8 +8,7 @@ export const cvStore = writable({
         phone: '',
         address: '',
         image: '',
-        linkedin: '',
-        github: ''
+        socials: []  
     },
     professionalSummary: '',
     workExperience: [],
@@ -17,7 +16,8 @@ export const cvStore = writable({
     skills: [],
     languages: [],
     certifications: [],
-    projects: []
+    projects: [],
+    selectedTemplate: 'classic'
 });
 
 export const addWorkExperience = () => {
