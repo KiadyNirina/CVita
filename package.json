@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@iconify/svelte": "^4.2.0",
 		"dom-to-image": "^2.6.0",
 		"html2canvas": "^1.4.1",
 		"html2canvas-pro": "^2.3.9",
