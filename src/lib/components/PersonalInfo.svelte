@@ -17,6 +17,8 @@
         { label: 'WhatsApp', value: 'whatsapp' },
         { label: 'Telegram', value: 'telegram' },
         { label: 'Discord', value: 'discord' },
+        { label: 'LinkedIn', value: 'linkedin' },
+        { label: 'GitHub', value: 'github' },
         { label: 'Mastodon', value: 'mastodon' },
         { label: 'Autre', value: 'other' }
     ];
@@ -265,32 +267,10 @@
                 class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all placeholder:text-neutral-400 hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
             />
         </div>
-        
-        <div class="space-y-2">
-            <label for="linkedin" class="block text-xs font-bold uppercase tracking-wider text-neutral-900">LinkedIn</label>
-            <input
-                id="linkedin"
-                type="url"
-                bind:value={$cvStore.personalInfo.linkedin}
-                placeholder="https://linkedin.com/in/votreprofil"
-                class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all placeholder:text-neutral-400 hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
-            />
-        </div>
-
-        <div class="space-y-2">
-            <label for="github" class="block text-xs font-bold uppercase tracking-wider text-neutral-900">GitHub</label>
-            <input
-                id="github"
-                type="url"
-                bind:value={$cvStore.personalInfo.github}
-                placeholder="https://github.com/votreprofil"
-                class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all placeholder:text-neutral-400 hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
-            />
-        </div>
 
         <!-- Réseaux sociaux supplémentaires -->
         <div class="col-span-1 md:col-span-2 mt-4 border-t border-neutral-200 pt-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-neutral-900 mb-3">Autres réseaux sociaux</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-neutral-900 mb-3">Réseaux sociaux</h3>
             
             <div class="flex flex-wrap gap-3 items-end">
                 <div class="flex-1 min-w-[160px]">
