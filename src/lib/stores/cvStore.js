@@ -17,7 +17,8 @@ export const cvStore = writable({
     skills: [],
     languages: [],
     certifications: [],
-    projects: []
+    projects: [],
+    selectedTemplate: 'classic'
 });
 
 export const addWorkExperience = () => {

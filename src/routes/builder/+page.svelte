@@ -9,6 +9,7 @@
     import Preview from '$lib/components/Preview.svelte';
     import ATSScore from '$lib/components/ATSScore.svelte';
     import ExportButtons from '$lib/components/ExportButtons.svelte';
+    import TemplateSelector from '$lib/components/TemplateSelector.svelte';
 
     let activeTab = 'edit';
 </script>
@@ -91,6 +92,7 @@
                 <div class="flex flex-col lg:flex-row gap-8 items-start">
                     <!-- Colonne gauche : formulaires -->
                     <div class="flex-1 min-w-0 space-y-6">
+                        <TemplateSelector /> 
                         <PersonalInfo />
                         <ProfessionalSummary />
                         <SkillsSection />
