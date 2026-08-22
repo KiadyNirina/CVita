@@ -5,6 +5,73 @@
     let imageError = false;
     let validationMessage = '';
 
+    const socialOptions = [
+        { label: 'Facebook', value: 'facebook' },
+        { label: 'Twitter / X', value: 'twitter' },
+        { label: 'Instagram', value: 'instagram' },
+        { label: 'YouTube', value: 'youtube' },
+        { label: 'TikTok', value: 'tiktok' },
+        { label: 'Snapchat', value: 'snapchat' },
+        { label: 'Pinterest', value: 'pinterest' },
+        { label: 'Reddit', value: 'reddit' },
+        { label: 'WhatsApp', value: 'whatsapp' },
+        { label: 'Telegram', value: 'telegram' },
+        { label: 'Discord', value: 'discord' },
+        { label: 'Mastodon', value: 'mastodon' },
+        { label: 'Autre', value: 'other' }
+    ];
+    let selectedSocial = '';
+    let socialUrl = '';
+    let socialError = '';
+    let socialSuccess = '';
+
+    // Initialiser le tableau socials s'il n'existe pas
+    if (!$cvStore.personalInfo.socials) {
+        $cvStore.personalInfo.socials = [];
+    }
+
+    function addSocial() {
+        const trimmedUrl = socialUrl.trim();
+        if (!selectedSocial) {
+            socialError = 'Veuillez sélectionner un réseau social.';
+            socialSuccess = '';
+            return;
+        }
+        if (!trimmedUrl) {
+            socialError = 'Veuillez saisir une URL.';
+            socialSuccess = '';
+            return;
+        }
+        // Validation basique de l'URL
+        if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
+            socialError = 'Veuillez saisir une URL valide (http:// ou https://).';
+            socialSuccess = '';
+            return;
+        }
+
+        // Récupérer le libellé du réseau sélectionné
+        const selectedOption = socialOptions.find(opt => opt.value === selectedSocial);
+        const label = selectedOption ? selectedOption.label : selectedSocial;
+
+        // Ajouter au store
+        $cvStore.personalInfo.socials = [
+            ...($cvStore.personalInfo.socials || []),
+            { label, url: trimmedUrl }
+        ];
+
+        // Réinitialiser les champs
+        selectedSocial = '';
+        socialUrl = '';
+        socialError = '';
+        socialSuccess = 'Réseau social ajouté ✅';
+    }
+
+    function removeSocial(index) {
+        $cvStore.personalInfo.socials = $cvStore.personalInfo.socials.filter((_, i) => i !== index);
+        socialSuccess = '';
+        socialError = '';
+    }
+
     // Handle image file selection and create preview
     function handleImageChange(event) {
         const file = event.target.files[0];
@@ -219,6 +286,75 @@
                 placeholder="https://github.com/votreprofil"
                 class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all placeholder:text-neutral-400 hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
             />
+        </div>
+
+        <!-- Réseaux sociaux supplémentaires -->
+        <div class="col-span-1 md:col-span-2 mt-4 border-t border-neutral-200 pt-4">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-neutral-900 mb-3">Autres réseaux sociaux</h3>
+            
+            <div class="flex flex-wrap gap-3 items-end">
+                <div class="flex-1 min-w-[160px]">
+                    <label for="socialSelect" class="block text-xs font-semibold text-neutral-700 mb-1">Réseau</label>
+                    <select
+                        id="socialSelect"
+                        bind:value={selectedSocial}
+                        class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
+                    >
+                        <option value="">-- Sélectionnez --</option>
+                        {#each socialOptions as option}
+                            <option value={option.value}>{option.label}</option>
+                        {/each}
+                    </select>
+                </div>
+                <div class="flex-1 min-w-[200px]">
+                    <label for="socialUrl" class="block text-xs font-semibold text-neutral-700 mb-1">URL du profil</label>
+                    <input
+                        id="socialUrl"
+                        type="url"
+                        bind:value={socialUrl}
+                        placeholder="https://..."
+                        class="block w-full rounded-xl border-2 border-neutral-300 bg-white px-4 py-3 text-base font-medium text-neutral-950 shadow-sm transition-all placeholder:text-neutral-400 hover:border-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-4 focus:ring-neutral-900/10"
+                    />
+                </div>
+                <button
+                    type="button"
+                    on:click={addSocial}
+                    class="inline-flex items-center justify-center rounded-xl bg-neutral-900 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-neutral-800 focus:outline-none focus:ring-4 focus:ring-neutral-900/20 transition-all"
+                >
+                    Ajouter
+                </button>
+            </div>
+
+            <!-- Messages -->
+            {#if socialError}
+                <p class="text-xs font-semibold text-red-600 mt-2">{socialError}</p>
+            {:else if socialSuccess}
+                <p class="text-xs font-semibold text-emerald-600 mt-2">{socialSuccess}</p>
+            {/if}
+
+            <!-- Liste des réseaux ajoutés -->
+            {#if $cvStore.personalInfo.socials && $cvStore.personalInfo.socials.length > 0}
+                <div class="mt-4 flex flex-wrap gap-2">
+                    {#each $cvStore.personalInfo.socials as social, index}
+                        <div class="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-800 border border-neutral-200">
+                            <span class="font-bold">{social.label}</span>
+                            <a href={social.url} target="_blank" rel="noopener noreferrer" class="text-neutral-600 hover:text-neutral-900 underline underline-offset-2">
+                                {social.url.length > 30 ? social.url.slice(0, 30) + '…' : social.url}
+                            </a>
+                            <button
+                                type="button"
+                                on:click={() => removeSocial(index)}
+                                class="ml-1 text-red-500 hover:text-red-700 focus:outline-none"
+                                aria-label="Supprimer"
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    {/each}
+                </div>
+            {/if}
         </div>
     </div>
 </div>

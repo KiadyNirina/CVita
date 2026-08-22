@@ -9,7 +9,8 @@ export const cvStore = writable({
         address: '',
         image: '',
         linkedin: '',
-        github: ''
+        github: '',
+        socials: []  
     },
     professionalSummary: '',
     workExperience: [],
