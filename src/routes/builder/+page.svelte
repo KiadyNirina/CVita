@@ -23,18 +23,25 @@
         <!-- ========================================= -->
         <div class="sticky top-0 z-10 bg-neutral-100/60 backdrop-blur-sm -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pt-4 pb-2">
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b-2 border-neutral-200 pb-4">
-                <div>
-                    <h1 class="text-3xl font-black text-black tracking-tight uppercase">
-                        Créateur de CV Professionnel
-                    </h1>
-                    <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-1">
-                        Créez, optimisez et exportez votre CV au format ATS-friendly
-                    </p>
+                <!-- Gauche : bouton retour + titre -->
+                <div class="flex items-center gap-3">
+                    <a href="/" class="p-2 rounded-full hover:bg-neutral-200 transition-colors" aria-label="Retour à l'accueil">
+                        <Icon icon="mdi:arrow-left" class="w-6 h-6 text-neutral-700" />
+                    </a>
+                    <div>
+                        <h1 class="text-3xl font-black text-black tracking-tight uppercase">
+                            Créateur de CV Professionnel
+                        </h1>
+                        <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-1">
+                            Créez, optimisez et exportez votre CV au format ATS-friendly
+                        </p>
+                    </div>
                 </div>
+                <!-- Droite : boutons d'export -->
                 <div class="hidden lg:block">
-                {#if activeTab === 'edit' || activeTab === 'preview'}
-                    <ExportButtons />
-                {/if}
+                    {#if activeTab === 'edit' || activeTab === 'preview'}
+                        <ExportButtons />
+                    {/if}
                 </div>
             </header>
 
