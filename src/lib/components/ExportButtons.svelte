@@ -1,6 +1,7 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
     import { generatePDF } from '$lib/utils/pdfGenerator';
+    import Icon from '@iconify/svelte';
 
     let fileInput;
     let isExportingPdf = false;
@@ -10,13 +11,11 @@
         isExportingPdf = true;
 
         try {
-            const preview = document.querySelector('#cv-preview');
-
-            if (!preview) {
-                throw new Error('Preview introuvable.');
+            const pagesContainer = document.getElementById('a4-pages');
+            if (!pagesContainer) {
+                throw new Error('Conteneur des pages A4 introuvable.');
             }
-
-            const pdfBlob = await generatePDF(preview);
+            const pdfBlob = await generatePDF(pagesContainer);
             const url = URL.createObjectURL(pdfBlob);
             const a = document.createElement('a');
 
@@ -187,24 +186,19 @@
     }
 </script>
 
-<div class="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
+<div class="flex flex-row flex-wrap gap-2 sm:gap-3 pt-2">
     <!-- Export PDF (Action Principale) -->
     <button
         type="button"
         on:click={exportPDF}
         disabled={isExportingPdf}
-        class="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-xs font-bold text-white hover:bg-neutral-800 disabled:bg-neutral-400 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all cursor-pointer shadow-sm"
+        class="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-xs font-bold text-white hover:bg-neutral-800 disabled:bg-neutral-400 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all cursor-pointer shadow-sm"
     >
         {#if isExportingPdf}
-            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+            <Icon icon="mdi:loading" class="w-4 h-4 animate-spin" />
             Génération en cours...
         {:else}
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
+            <Icon icon="mdi:download" class="w-4 h-4" />
             Exporter en PDF
         {/if}
     </button>
@@ -213,11 +207,9 @@
     <button
         type="button"
         on:click={exportJSON}
-        class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-neutral-300 bg-white px-5 py-3 text-xs font-bold text-neutral-900 hover:border-black hover:bg-neutral-50 focus:outline-none transition-all cursor-pointer shadow-sm"
+        class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-xs font-bold text-neutral-900 hover:border-black hover:bg-neutral-50 focus:outline-none transition-all cursor-pointer shadow-sm"
     >
-        <svg class="w-4 h-4 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-        </svg>
+        <Icon icon="mdi:export" class="w-4 h-4 text-neutral-700" />
         Sauvegarder (JSON)
     </button>
 
@@ -225,11 +217,9 @@
     <button
         type="button"
         on:click={openImportDialog}
-        class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-neutral-300 bg-white px-5 py-3 text-xs font-bold text-neutral-900 hover:border-black hover:bg-neutral-50 focus:outline-none transition-all cursor-pointer shadow-sm"
+        class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-xs font-bold text-neutral-900 hover:border-black hover:bg-neutral-50 focus:outline-none transition-all cursor-pointer shadow-sm"
     >
-        <svg class="w-4 h-4 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-        </svg>
+        <Icon icon="mdi:import" class="w-4 h-4 text-neutral-700" />
         Importer (JSON)
     </button>
 

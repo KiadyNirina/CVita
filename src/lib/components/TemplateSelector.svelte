@@ -23,8 +23,12 @@
                         : 'border-neutral-200 hover:border-black/50'}"
                 on:click={() => selectTemplate(template.id)}
             >
-                <div class="aspect-[210/297] bg-white rounded border border-neutral-300 mb-2 flex items-center justify-center text-xs text-neutral-400">
-                    <span>Aperçu {template.label}</span>
+                <div class="aspect-[210/297] bg-white rounded border border-neutral-300 mb-2 overflow-hidden">
+                    <img 
+                        src={template.thumbnail} 
+                        alt={`Aperçu du modèle ${template.label}`}
+                        class="w-full h-full object-cover"
+                    />
                 </div>
                 <p class="text-xs font-bold uppercase tracking-wider">{template.label}</p>
                 <p class="text-[10px] text-neutral-500 mt-0.5">{template.description}</p>

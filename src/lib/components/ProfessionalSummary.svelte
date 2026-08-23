@@ -1,5 +1,6 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
+    import Icon from '@iconify/svelte';
 
     let showHelp = false;
     let wordCount = 0;
@@ -15,12 +16,12 @@
     $: isOptimalLength = wordCount >= 50 && wordCount <= 200;
 </script>
 
-<div class="bg-white rounded-2xl border-2 border-neutral-200 p-6 shadow-sm">
+<div class="bg-white rounded-2xl border-2 border-neutral-200 p-4 sm:p-6 shadow-sm">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-            <h2 class="text-xl font-bold text-neutral-900 tracking-tight">Résumé Professionnel</h2>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-300">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">Résumé Professionnel</h2>
+            <span class="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-300">
                 Optionnel
             </span>
         </div>
@@ -28,11 +29,9 @@
         <button
             type="button"
             on:click={() => showHelp = !showHelp}
-            class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border-2 border-neutral-300 text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all cursor-pointer"
+            class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg border-2 border-neutral-300 text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all cursor-pointer"
         >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <Icon icon="mdi:help-circle" class="w-4 h-4" />
             {showHelp ? 'Masquer l\'aide' : 'Conseils de rédaction'}
         </button>
     </div>
@@ -40,13 +39,11 @@
     <!-- Section d'aide -->
     {#if showHelp}
         <div class="mb-5 p-4 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-2 animate-fadeIn">
-            <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+            <div class="flex items-center gap-2 text-amber-400 font-bold text-xs sm:text-sm">
+                <Icon icon="mdi:lightbulb" class="w-4 h-4" />
                 <span>Conseils pour marquer des points auprès des recruteurs :</span>
             </div>
-            <ul class="text-xs text-neutral-300 space-y-1.5 pl-5 list-disc">
+            <ul class="text-[10px] sm:text-xs text-neutral-300 space-y-1.5 pl-5 list-disc">
                 <li>Visez entre <strong class="text-white">50 et 200 mots</strong> pour aller à l'essentiel.</li>
                 <li>Indiquez votre titre exact, vos <strong class="text-white">années d'expérience</strong> et vos spécialités.</li>
                 <li>Mettez en avant un accomplissement clé ou des compétences techniques clés.</li>
@@ -62,35 +59,35 @@
             bind:value={$cvStore.professionalSummary}
             placeholder="Développeur Full Stack avec 5 ans d'expérience spécialisé en architectures cloud et Nuxt/Vue.js. Passionné par l'optimisation des performances et le design d'interfaces utilisateur fluides..."
             rows="5"
-            class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-50 px-4 py-3 text-neutral-900 font-medium placeholder-neutral-400 shadow-sm focus:border-black focus:bg-white focus:outline-none focus:ring-0 transition-all text-sm leading-relaxed"
+            class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-50 px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-neutral-900 font-medium placeholder-neutral-400 shadow-sm focus:border-black focus:bg-white focus:outline-none focus:ring-0 transition-all leading-relaxed"
         ></textarea>
     </div>
 
     <!-- Pied de composant / Compteur de mots -->
-    <div class="mt-3 flex items-center justify-between text-xs font-semibold">
+    <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[10px] sm:text-xs font-semibold">
         <!-- Badge statut -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
             {#if wordCount === 0}
                 <span class="px-2 py-1 rounded-md bg-neutral-100 text-neutral-600 border border-neutral-300">
                     Non renseigné
                 </span>
             {:else if wordCount < 50}
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-100 text-amber-900 border border-amber-300">
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100 text-amber-900 border border-amber-300">
                     ⚠️ Trop court (min 50 mots)
                 </span>
             {:else if wordCount > 200}
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-red-100 text-red-900 border border-red-300">
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-red-100 text-red-900 border border-red-300">
                     ⚠️ Trop long (max 200 mots)
                 </span>
             {:else}
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">
+                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">
                     ✓ Longueur idéale
                 </span>
             {/if}
         </div>
 
         <!-- Nombre exact de mots -->
-        <div class="text-neutral-800 font-bold">
+        <div class="text-neutral-800 font-bold whitespace-nowrap">
             Mots : <span class={isOptimalLength ? 'text-emerald-700 font-extrabold' : 'text-neutral-900'}>{wordCount}</span> / 200
         </div>
     </div>

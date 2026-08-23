@@ -10,92 +10,130 @@
     import ATSScore from '$lib/components/ATSScore.svelte';
     import ExportButtons from '$lib/components/ExportButtons.svelte';
     import TemplateSelector from '$lib/components/TemplateSelector.svelte';
+    import A4Scaler from '$lib/components/A4Scaler.svelte';
+    import Icon from '@iconify/svelte';
+    import { page } from '$app/stores';
+    
+    const siteUrl = $page.url.origin;
 
     let activeTab = 'templates';
 </script>
 
-<div class="min-h-screen bg-neutral-100/60 py-8 px-4 sm:px-6 lg:px-8 font-sans">
+<svelte:head>
+    <title>Créer mon CV en ligne – CVita (Gratuit, ATS-Friendly, Export PDF)</title>
+    <meta name="description" content="Utilisez l'éditeur CVita pour créer un CV professionnel compatible ATS en quelques minutes. Export PDF vectoriel, stockage local, sans inscription." />
+    <meta name="keywords" content="créer CV, éditeur CV, CV ATS, export PDF, CV gratuit en ligne, générateur CV, CV professionnel, CVita" />
+    <link rel="canonical" href="{siteUrl}/builder" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CVita – Éditeur de CV en ligne gratuit et ATS-friendly" />
+    <meta property="og:description" content="Créez votre CV professionnel compatible ATS. Export PDF, stockage local, sans inscription." />
+    <meta property="og:url" content="{siteUrl}/builder" />
+    <meta property="og:image" content="{siteUrl}/builder-og-image.jpg" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CVita – Créer un CV ATS-friendly gratuitement" />
+    <meta name="twitter:description" content="Éditeur en ligne : CV professionnel, export PDF vectoriel, données locales." />
+    <meta name="twitter:image" content="{siteUrl}/builder-og-image.jpg" />
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "CVita – Éditeur de CV en ligne",
+            "url": "{siteUrl}/builder",
+            "description": "Créez un CV professionnel compatible ATS en quelques minutes, sans inscription et avec stockage local de vos données.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires JavaScript",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        }
+    </script>
+</svelte:head>
+
+<div class="min-h-screen bg-neutral-100/60 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- ========================================= -->
         <!-- EN-TÊTE FIXE (sticky)                     -->
         <!-- ========================================= -->
         <div class="sticky top-0 z-10 bg-neutral-100/60 backdrop-blur-sm -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pt-4 pb-2">
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b-2 border-neutral-200 pb-4">
-                <div>
-                    <h1 class="text-3xl font-black text-black tracking-tight uppercase">
-                        Créateur de CV Professionnel
-                    </h1>
-                    <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-1">
-                        Créez, optimisez et exportez votre CV au format ATS-friendly
-                    </p>
+                <!-- Gauche : bouton retour + titre -->
+                <div class="flex items-center gap-3">
+                    <a href="/" class="p-2 rounded-full hover:bg-neutral-200 transition-colors" aria-label="Retour à l'accueil">
+                        <Icon icon="mdi:arrow-left" class="w-6 h-6 text-neutral-700" />
+                    </a>
+                    <div>
+                        <h1 class="text-3xl font-black text-black tracking-tight uppercase">
+                            Créateur de CV Professionnel
+                        </h1>
+                        <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-1">
+                            Créez, optimisez et exportez votre CV au format ATS-friendly
+                        </p>
+                    </div>
                 </div>
+                <!-- Droite : boutons d'export -->
                 <div class="hidden lg:block">
-                {#if activeTab === 'edit' || activeTab === 'preview'}
-                    <ExportButtons />
-                {/if}
+                    {#if activeTab === 'edit' || activeTab === 'preview'}
+                        <ExportButtons />
+                    {/if}
                 </div>
             </header>
 
             <nav class="md:flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
                 <button
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'templates'
                             ? 'bg-black text-white'
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'templates'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    Modèles
+                    <Icon icon="mdi:view-grid" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'templates'}>Modèles</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'edit' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'edit'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 012.828 0L20 4.828a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                    </svg>
-                    Éditeur
+                    <Icon icon="mdi:pencil" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'edit'}>Éditeur</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'preview' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'preview'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    Aperçu A4
+                    <Icon icon="mdi:eye" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'ats' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'ats'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Analyse ATS
+                    <Icon icon="mdi:check-circle" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
                 </button>
             </nav>
         </div>
@@ -132,8 +170,10 @@
                                     </span>
                                 </div>
                                 <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                    <div class="transform scale-[0.55] origin-top-left -mr-[80%] -mb-[80%]">
-                                        <Preview />
+                                    <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
+                                        <A4Scaler maxScale={0.7}>
+                                            <Preview />
+                                        </A4Scaler>
                                     </div>
                                 </div>
                             </div>
@@ -162,8 +202,12 @@
                             <p class="text-xs font-semibold text-neutral-500">Rendu final prêt pour impression A4</p>
                         </div>
                     </div>
-                    <div class="overflow-x-auto py-4 bg-neutral-100/50 rounded-xl border-2 border-neutral-200 flex justify-center">
-                        <Preview fullMode={true} />
+                    <div class="py-4 bg-neutral-100/50 rounded-xl flex justify-center">
+                        <div class="w-full max-w-4xl">
+                            <A4Scaler>
+                                <Preview fullMode={true} />
+                            </A4Scaler>
+                        </div>
                     </div>
                 </div>
 
