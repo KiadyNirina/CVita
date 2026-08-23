@@ -11,6 +11,7 @@
     import ExportButtons from '$lib/components/ExportButtons.svelte';
     import TemplateSelector from '$lib/components/TemplateSelector.svelte';
     import A4Scaler from '$lib/components/A4Scaler.svelte';
+    import Icon from '@iconify/svelte';
 
     let activeTab = 'templates';
 </script>
@@ -40,63 +41,54 @@
             <nav class="md:flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
                 <button
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'templates'
                             ? 'bg-black text-white'
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'templates'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    Modèles
+                    <Icon icon="mdi:view-grid" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'templates'}>Modèles</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'edit' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'edit'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 012.828 0L20 4.828a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                    </svg>
-                    Éditeur
+                    <Icon icon="mdi:pencil" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'edit'}>Éditeur</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'preview' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'preview'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    Aperçu A4
+                    <Icon icon="mdi:eye" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
                 </button>
 
                 <button 
                     type="button"
-                    class={`inline-flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
                         activeTab === 'ats' 
                             ? 'bg-black text-white' 
                             : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
                     }`}
                     on:click={() => activeTab = 'ats'}
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Analyse ATS
+                    <Icon icon="mdi:check-circle" class="w-4 h-4" />
+                    <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
                 </button>
             </nav>
         </div>
