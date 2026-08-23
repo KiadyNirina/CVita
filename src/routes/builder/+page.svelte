@@ -12,9 +12,47 @@
     import TemplateSelector from '$lib/components/TemplateSelector.svelte';
     import A4Scaler from '$lib/components/A4Scaler.svelte';
     import Icon from '@iconify/svelte';
+    import { page } from '$app/stores';
+    
+    const siteUrl = $page.url.origin;
 
     let activeTab = 'templates';
 </script>
+
+<svelte:head>
+    <title>Créer mon CV en ligne – CVita (Gratuit, ATS-Friendly, Export PDF)</title>
+    <meta name="description" content="Utilisez l'éditeur CVita pour créer un CV professionnel compatible ATS en quelques minutes. Export PDF vectoriel, stockage local, sans inscription." />
+    <meta name="keywords" content="créer CV, éditeur CV, CV ATS, export PDF, CV gratuit en ligne, générateur CV, CV professionnel, CVita" />
+    <link rel="canonical" href="{siteUrl}/builder" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CVita – Éditeur de CV en ligne gratuit et ATS-friendly" />
+    <meta property="og:description" content="Créez votre CV professionnel compatible ATS. Export PDF, stockage local, sans inscription." />
+    <meta property="og:url" content="{siteUrl}/builder" />
+    <meta property="og:image" content="{siteUrl}/builder-og-image.jpg" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CVita – Créer un CV ATS-friendly gratuitement" />
+    <meta name="twitter:description" content="Éditeur en ligne : CV professionnel, export PDF vectoriel, données locales." />
+    <meta name="twitter:image" content="{siteUrl}/builder-og-image.jpg" />
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "CVita – Éditeur de CV en ligne",
+            "url": "{siteUrl}/builder",
+            "description": "Créez un CV professionnel compatible ATS en quelques minutes, sans inscription et avec stockage local de vos données.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires JavaScript",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        }
+    </script>
+</svelte:head>
 
 <div class="min-h-screen bg-neutral-100/60 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
