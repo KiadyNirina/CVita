@@ -7,11 +7,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <!-- Logo / Titre Brand -->
         <a href="/" class="flex items-center gap-2.5 group">
-            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-black text-sm group-hover:scale-105 transition-transform">
-                CV
+            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-white font-black text-sm group-hover:scale-105 transition-transform">
+                <img src="images/logo.png" alt="">
             </div>
-            <span class="text-base font-black text-black tracking-tight uppercase">
-                CV<span class="text-neutral-500">Builder</span>
+            <span class="text-base font-black text-black tracking-tight">
+                CV<span class="text-neutral-500">ita</span>
             </span>
         </a>
 
