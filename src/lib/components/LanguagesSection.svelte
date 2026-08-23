@@ -1,5 +1,6 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
+    import Icon from '@iconify/svelte';
 
     let newLanguage = '';
     let proficiency = 'intermediate';
@@ -30,11 +31,11 @@
     };
 </script>
 
-<div class="bg-white rounded-2xl border-2 border-neutral-200 p-6 shadow-sm">
+<div class="bg-white rounded-2xl border-2 border-neutral-200 p-4 sm:p-6 shadow-sm">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <div>
-            <h2 class="text-xl font-bold text-neutral-900 tracking-tight">Langues</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">Langues</h2>
             <p class="text-xs text-neutral-500 font-medium">Vos compétences linguistiques</p>
         </div>
         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">
@@ -45,12 +46,12 @@
     <!-- Liste des langues -->
     <div class="space-y-2.5 mb-6">
         {#each $cvStore.languages as lang (lang.id)}
-            <div class="flex items-center justify-between p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50/50 hover:border-neutral-400 transition-all">
-                <div class="flex items-center gap-3">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50/50 hover:border-neutral-400 transition-all">
+                <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                     <span class="font-bold text-sm text-neutral-900">{lang.name}</span>
                     
                     <!-- Badge Niveau -->
-                    <span class={`text-[11px] font-bold px-2 py-0.5 rounded-md border ${proficiencyMap[lang.proficiency]?.class || proficiencyMap.intermediate.class}`}>
+                    <span class={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md border ${proficiencyMap[lang.proficiency]?.class || proficiencyMap.intermediate.class}`}>
                         {proficiencyMap[lang.proficiency]?.label || lang.proficiency}
                     </span>
                 </div>
@@ -60,11 +61,9 @@
                     type="button"
                     on:click={() => removeLanguage(lang.id)}
                     aria-label={`Supprimer ${lang.name}`}
-                    class="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-red-700 hover:bg-red-50 px-2.5 py-1 rounded-lg border border-red-200 transition-all cursor-pointer"
+                    class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 sm:px-2.5 sm:py-1 rounded-lg border border-red-200 transition-all cursor-pointer"
                 >
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                    <Icon icon="mdi:delete" class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     Supprimer
                 </button>
             </div>
@@ -87,7 +86,7 @@
                 type="text"
                 bind:value={newLanguage}
                 placeholder="Ex: Anglais, Espagnol, Allemand..."
-                class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-50 px-4 py-2.5 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:bg-white focus:outline-none transition-all"
+                class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-50 px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:bg-white focus:outline-none transition-all"
                 on:keydown={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
             />
         </div>
@@ -98,7 +97,7 @@
             <select
                 id="languageProficiencySelect"
                 bind:value={proficiency}
-                class="w-full sm:w-auto rounded-xl border-2 border-neutral-300 bg-neutral-50 px-4 py-2.5 text-sm font-bold text-neutral-900 focus:border-black focus:bg-white focus:outline-none transition-all cursor-pointer"
+                class="w-full sm:w-auto rounded-xl border-2 border-neutral-300 bg-neutral-50 px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-bold text-neutral-900 focus:border-black focus:bg-white focus:outline-none transition-all cursor-pointer"
             >
                 <option value="basic">Notions</option>
                 <option value="intermediate">Intermédiaire</option>
@@ -111,11 +110,9 @@
         <button
             type="button"
             on:click={addLanguage}
-            class="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-bold text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all cursor-pointer"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-4 py-2 text-sm sm:px-5 sm:py-2.5 font-bold text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all cursor-pointer"
         >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-            </svg>
+            <Icon icon="mdi:plus" class="w-4 h-4" />
             Ajouter
         </button>
     </div>
