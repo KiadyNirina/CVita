@@ -1,6 +1,9 @@
 <script>
     import Header from '$lib/components/Header.svelte';
     import { slide } from 'svelte/transition';
+    import { page } from '$app/stores';
+    
+    const siteUrl = $page.url.origin;
 
     const currentYear = new Date().getFullYear();
 
@@ -81,6 +84,73 @@
         };
     }
 </script>
+
+<svelte:head>
+    <!-- Titre optimisé -->
+    <title>CVita – Créateur de CV Gratuit, ATS-Friendly et Sans Inscription</title>
+    <meta name="description" content="Créez un CV professionnel compatible ATS en quelques minutes. 100% gratuit, sans inscription, export PDF vectoriel et stockage local de vos données." />
+    <meta name="keywords" content="CV gratuit, créateur de CV, CV compatible ATS, générateur de CV en ligne, export PDF, CV sans inscription, CV vectoriel, CV A4" />
+    <link rel="canonical" href="{siteUrl}/" />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph (Facebook, LinkedIn...) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CVita – Créez votre CV ATS-Friendly Gratuitement" />
+    <meta property="og:description" content="Générateur de CV en ligne 100% gratuit, sans inscription. Export PDF vectoriel et stockage local des données." />
+    <meta property="og:url" content="{siteUrl}/" />
+    <meta property="og:image" content="{siteUrl}/og-image.jpg" />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CVita – Créateur de CV Gratuit et ATS-Friendly" />
+    <meta name="twitter:description" content="Créez un CV professionnel en quelques minutes. 100% gratuit, sans inscription, stockage local." />
+    <meta name="twitter:image" content="{siteUrl}/og-image.jpg" />
+
+    <!-- Schéma structuré FAQ (JSON-LD) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Est-ce réellement 100% gratuit ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Oui, totalement. Aucun abonnement caché, aucune carte bancaire demandée et aucune fonctionnalité payante bloquée."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Qu'est-ce qu'un CV compatible ATS ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Les ATS (Applicant Tracking Systems) sont des logiciels utilisés par les recruteurs pour filtrer automatiquement les CV. Notre éditeur génère une structure propre et du texte lisible que ces algorithmes analysent sans erreur."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Où sont stockées mes données personnelles ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Elles restent exclusivement stockées localement dans votre navigateur (LocalStorage). Rien n'est envoyé ni conservé sur nos serveurs."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Puis-je rééditer mon CV plus tard ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Absolument. Vous pouvez exporter vos données au format JSON et les recharger sur le site à tout moment pour mettre à jour votre parcours."
+                    }
+                }
+            ]
+        }
+    </script>
+</svelte:head>
 
 <div class="min-h-screen bg-neutral-100/60 flex flex-col justify-between overflow-x-hidden">
     <!-- Header -->
