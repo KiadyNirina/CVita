@@ -88,40 +88,77 @@
 
     <main class="w-full">
         <!-- 1. HERO SECTION -->
-        <section class="max-w-5xl mx-auto text-center px-4 pt-16 pb-16" use:reveal>
-            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-black uppercase tracking-widest bg-black text-white rounded-full mb-8 shadow-sm animate-bounce">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Outil 100% Gratuit & Sans Inscription
-            </span>
+        <section class="max-w-6xl mx-auto px-4 py-16 md:py-24" use:reveal>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Colonne gauche : texte et boutons -->
+                <div class="text-left">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-black uppercase tracking-widest bg-black text-white rounded-full mb-8 shadow-sm">
+                        Outil 100% Gratuit & Sans Inscription
+                    </span>
 
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black text-black tracking-tight leading-none uppercase">
-                Créez votre CV <br />
-                <span class="bg-gradient-to-r from-black via-neutral-700 to-neutral-400 bg-clip-text text-transparent">
-                    en quelques minutes.
-                </span>
-            </h1>
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-black tracking-tight leading-none uppercase">
+                        Créez votre CV <br />
+                        <span class="bg-gradient-to-r from-black via-neutral-700 to-neutral-400 bg-clip-text text-transparent">
+                            en quelques minutes.
+                        </span>
+                    </h1>
 
-            <p class="mt-6 text-sm sm:text-base font-semibold text-neutral-600 max-w-xl mx-auto leading-relaxed">
-                Un éditeur moderne et ATS-friendly avec aperçu A4 en temps réel et analyse de compatibilité automatique.
-            </p>
+                    <p class="mt-6 text-sm sm:text-base font-semibold text-neutral-600 max-w-xl leading-relaxed">
+                        Un éditeur moderne et ATS-friendly avec aperçu A4 en temps réel et analyse de compatibilité automatique.
+                    </p>
 
-            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a 
-                    href="/builder" 
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-black text-white text-xs font-black uppercase tracking-wider rounded-xl hover:bg-neutral-800 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1"
-                >
-                    Créer mon CV
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </a>
-                
-                <a 
-                    href="#features" 
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-neutral-900 text-xs font-black uppercase tracking-wider rounded-xl border-2 border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all"
-                >
-                    En savoir plus
-                </a>
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                        <a 
+                            href="/builder" 
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-black text-white text-xs font-black uppercase tracking-wider rounded-xl hover:bg-neutral-800 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1"
+                        >
+                            Créer mon CV
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                        
+                        <a 
+                            href="#features" 
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-neutral-900 text-xs font-black uppercase tracking-wider rounded-xl border-2 border-neutral-300 hover:border-black hover:bg-neutral-50 transition-all"
+                        >
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Colonne droite : mockup CV -->
+                <div class="hidden md:block">
+                    <div class="bg-white rounded-2xl shadow-2xl border border-neutral-200 p-8 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <!-- En-tête du CV simulé -->
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-neutral-200 rounded-full"></div>
+                            <div>
+                                <div class="h-3 w-32 bg-neutral-800 rounded mb-2"></div>
+                                <div class="h-2 w-24 bg-neutral-300 rounded"></div>
+                            </div>
+                        </div>
+                        <!-- Séparateur -->
+                        <div class="border-t border-neutral-100 my-4"></div>
+                        <!-- Sections simulées -->
+                        <div class="space-y-4">
+                            <div>
+                                <div class="h-2 w-20 bg-neutral-800 rounded mb-2"></div>
+                                <div class="h-2 w-full bg-neutral-200 rounded"></div>
+                                <div class="h-2 w-3/4 bg-neutral-200 rounded mt-1"></div>
+                            </div>
+                            <div>
+                                <div class="h-2 w-24 bg-neutral-800 rounded mb-2"></div>
+                                <div class="h-2 w-full bg-neutral-200 rounded"></div>
+                                <div class="h-2 w-5/6 bg-neutral-200 rounded mt-1"></div>
+                            </div>
+                            <div>
+                                <div class="h-2 w-16 bg-neutral-800 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-neutral-200 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
