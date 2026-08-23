@@ -16,7 +16,7 @@
     let activeTab = 'templates';
 </script>
 
-<div class="min-h-screen bg-neutral-100/60 py-8 px-4 sm:px-6 lg:px-8 font-sans">
+<div class="min-h-screen bg-neutral-100/60 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- ========================================= -->
         <!-- EN-TÊTE FIXE (sticky)                     -->
