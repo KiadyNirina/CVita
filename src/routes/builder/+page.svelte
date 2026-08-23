@@ -165,7 +165,7 @@
                             <p class="text-xs font-semibold text-neutral-500">Rendu final prêt pour impression A4</p>
                         </div>
                     </div>
-                    <div class="py-4 bg-neutral-100/50 rounded-xl border-2 border-neutral-200 flex justify-center">
+                    <div class="py-4 bg-neutral-100/50 rounded-xl flex justify-center">
                         <div class="w-full max-w-4xl">
                             <A4Scaler>
                                 <Preview fullMode={true} />

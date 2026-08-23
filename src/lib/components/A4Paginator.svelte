@@ -118,7 +118,7 @@
         box-sizing: border-box;
         overflow: hidden;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        border: 1px solid #e5e7eb;
+        border: 1px solid #d1d4dad4;
         border-radius: 4px;
         page-break-after: always;      /* Saut de page à l’impression */
         break-inside: avoid;
