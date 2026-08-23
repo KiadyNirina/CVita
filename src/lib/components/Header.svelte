@@ -17,14 +17,14 @@
 
         <!-- Liens de navigation -->
         <nav class="flex items-center gap-3 sm:gap-6">
-            <a 
+            <!-- <a 
                 href="/" 
                 class={`text-xs font-bold uppercase tracking-wider transition-colors ${
                     currentPath === '/' ? 'text-black font-black' : 'text-neutral-500 hover:text-black'
                 }`}
             >
                 Accueil
-            </a>
+            </a> -->
 
             <a 
                 href="/builder" 
