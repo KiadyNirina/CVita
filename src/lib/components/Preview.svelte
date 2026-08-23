@@ -23,6 +23,7 @@
             data={store}
             templateComponent={templateComponents[store.selectedTemplate] || templateComponents.classic}
             {fullMode}
+            fitWidth={fullMode}
         />
     {/if}
 </div>

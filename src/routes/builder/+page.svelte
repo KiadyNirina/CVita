@@ -10,6 +10,7 @@
     import ATSScore from '$lib/components/ATSScore.svelte';
     import ExportButtons from '$lib/components/ExportButtons.svelte';
     import TemplateSelector from '$lib/components/TemplateSelector.svelte';
+    import A4Scaler from '$lib/components/A4Scaler.svelte';
 
     let activeTab = 'templates';
 </script>
@@ -132,8 +133,10 @@
                                     </span>
                                 </div>
                                 <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                    <div class="transform scale-[0.55] origin-top-left -mr-[80%] -mb-[80%]">
-                                        <Preview />
+                                    <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
+                                        <A4Scaler maxScale={0.7}>
+                                            <Preview />
+                                        </A4Scaler>
                                     </div>
                                 </div>
                             </div>
@@ -162,8 +165,12 @@
                             <p class="text-xs font-semibold text-neutral-500">Rendu final prêt pour impression A4</p>
                         </div>
                     </div>
-                    <div class="overflow-x-auto py-4 bg-neutral-100/50 rounded-xl border-2 border-neutral-200 flex justify-center">
-                        <Preview fullMode={true} />
+                    <div class="py-4 bg-neutral-100/50 rounded-xl border-2 border-neutral-200 flex justify-center">
+                        <div class="w-full max-w-4xl">
+                            <A4Scaler>
+                                <Preview fullMode={true} />
+                            </A4Scaler>
+                        </div>
                     </div>
                 </div>
 
