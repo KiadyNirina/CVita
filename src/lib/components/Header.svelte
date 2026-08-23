@@ -3,7 +3,7 @@
     export let currentPath = '/';
 </script>
 
-<header class="w-full bg-white border-b-2 border-neutral-200 sticky top-0 z-50">
+<header class="w-full bg-white border-b-2 border-neutral-200 fixed top-0 left-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <!-- Logo / Titre Brand -->
         <a href="/" class="flex items-center gap-2.5 group">
