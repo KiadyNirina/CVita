@@ -422,7 +422,7 @@
     <!-- Footer -->
     <footer class="max-w-6xl mx-auto w-full px-4 py-8 border-t-2 border-neutral-200 text-center">
         <p class="text-xs font-bold text-neutral-500 uppercase tracking-wider">
-            © {currentYear} CVBuilder — Vos données restent stockées uniquement dans votre navigateur.
+            © {currentYear} CVita — Tous droits réservés.
         </p>
     </footer>
 </div>
