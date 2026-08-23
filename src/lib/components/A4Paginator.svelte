@@ -85,7 +85,7 @@
 <A4Scaler>
     <div class="a4-pages" id="a4-pages">
         {#each pagesHtml as pageHtml, i}
-            <div class="a4-page" style="font-family: 'Times New Roman', serif;">
+            <div class="a4-page">
                 {@html pageHtml}
             </div>
         {/each}
