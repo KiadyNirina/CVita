@@ -1,5 +1,6 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
+    import A4Paginator from '$lib/components/A4Paginator.svelte';
     import ClassicTemplate from './templates/ClassicTemplate.svelte';
     import ModernTemplate from './templates/ModernTemplate.svelte';
     import MinimalTemplate from './templates/MinimalTemplate.svelte';
@@ -17,9 +18,11 @@
 </script>
 
 <div class="preview-container {fullMode ? 'w-full' : 'w-[210mm]'}">
-    <svelte:component
-        this={templateComponents[store.selectedTemplate] || templateComponents.classic}
-        data={store}
-        {fullMode}
-    />
+    {#if store}
+        <A4Paginator
+            data={store}
+            templateComponent={templateComponents[store.selectedTemplate] || templateComponents.classic}
+            {fullMode}
+        />
+    {/if}
 </div>

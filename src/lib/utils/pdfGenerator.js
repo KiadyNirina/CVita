@@ -2,37 +2,24 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 
 /**
- * Génère un PDF à partir du rendu réel de Preview.svelte.
- *
- * Le PDF est donc basé sur le HTML/CSS affiché,
- * et non sur une reconstruction manuelle avec jsPDF.
+ * Génère un PDF à partir des pages A4 visibles.
+ * Chaque page est capturée séparément pour un rendu parfait.
  */
-export async function generatePDF(element) {
-    if (!element) {
-        throw new Error('Élément Preview introuvable.');
+export async function generatePDF(pagesContainer) {
+    if (!pagesContainer) {
+        throw new Error('Conteneur des pages introuvable.');
     }
 
-    // Attendre que le navigateur ait terminé le rendu
+    // Récupère toutes les pages A4 individuelles
+    const pageElements = pagesContainer.querySelectorAll('.a4-page');
+    if (pageElements.length === 0) {
+        throw new Error('Aucune page A4 trouvée.');
+    }
+
+    // Attend le rendu complet
     await new Promise((resolve) => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(resolve);
-        });
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
     });
-
-    const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#ffffff',
-        logging: false,
-
-        // Évite que html2canvas reprenne certaines dimensions
-        // dynamiques du viewport.
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
-    });
-
-    const imgData = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF({
         orientation: 'portrait',
@@ -44,52 +31,41 @@ export async function generatePDF(element) {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
+    for (let i = 0; i < pageElements.length; i++) {
+        const page = pageElements[i];
 
-    const ratio = pdfWidth / canvasWidth;
-    const renderedHeight = canvasHeight * ratio;
+        const canvas = await html2canvas(page, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: '#ffffff',
+            logging: false,
+            windowWidth: page.scrollWidth,
+            windowHeight: page.scrollHeight,
+            onclone: (clonedDoc) => {
+                const allElements = clonedDoc.querySelectorAll('*');
+                allElements.forEach((el) => {
+                    el.style.transform = 'none';
+                });
+            }
+        });
 
-    let remainingHeight = renderedHeight;
-    let position = 0;
-    const EPSILON = 1;
+        const imgData = canvas.toDataURL('image/png');
 
-    /*
-     * Première page
-     */
-    pdf.addImage(
-        imgData,
-        'PNG',
-        0,
-        position,
-        pdfWidth,
-        renderedHeight,
-        undefined,
-        'FAST'
-    );
-
-    remainingHeight -= pdfHeight;
-
-    /*
-     * Pages suivantes
-     */
-    while (remainingHeight > EPSILON) {
-        position -= pdfHeight;
-
-        pdf.addPage();
+        if (i > 0) {
+            pdf.addPage();
+        }
 
         pdf.addImage(
             imgData,
             'PNG',
             0,
-            position,
+            0,
             pdfWidth,
-            renderedHeight,
+            pdfHeight,
             undefined,
             'FAST'
         );
-
-        remainingHeight -= pdfHeight;
     }
 
     return pdf.output('blob');

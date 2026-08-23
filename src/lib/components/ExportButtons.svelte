@@ -10,13 +10,11 @@
         isExportingPdf = true;
 
         try {
-            const preview = document.querySelector('#cv-preview');
-
-            if (!preview) {
-                throw new Error('Preview introuvable.');
+            const pagesContainer = document.getElementById('a4-pages');
+            if (!pagesContainer) {
+                throw new Error('Conteneur des pages A4 introuvable.');
             }
-
-            const pdfBlob = await generatePDF(preview);
+            const pdfBlob = await generatePDF(pagesContainer);
             const url = URL.createObjectURL(pdfBlob);
             const a = document.createElement('a');
 
