@@ -1,5 +1,6 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
+    import Icon from '@iconify/svelte';
 
     let newSkill = '';
     let skillLevel = 'intermediate';
@@ -10,6 +11,10 @@
         advanced: { label: 'Avancé', class: 'bg-neutral-900 text-white border-black' },
         expert: { label: 'Expert', class: 'bg-black text-amber-400 border-black' }
     };
+
+    // Drag & Drop state
+    let dragItemId = null;
+    let dragOverItemId = null;
 
     const addSkill = () => {
         if (newSkill.trim()) {
@@ -28,6 +33,46 @@
     const removeSkill = (id) => {
         $cvStore.skills = $cvStore.skills.filter(skill => skill.id !== id);
     };
+
+    // Gestion du drag
+    function handleDragStart(event, id) {
+        dragItemId = id;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', id);
+    }
+
+    function handleDragOver(event, id) {
+        event.preventDefault();
+        dragOverItemId = id;
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragLeave() {
+        dragOverItemId = null;
+    }
+
+    function handleDrop(event, targetId) {
+        event.preventDefault();
+        const draggedId = dragItemId;
+        if (draggedId && draggedId !== targetId) {
+            const items = $cvStore.skills;
+            const draggedIndex = items.findIndex(skill => skill.id === draggedId);
+            const targetIndex = items.findIndex(skill => skill.id === targetId);
+            if (draggedIndex !== -1 && targetIndex !== -1) {
+                const newItems = [...items];
+                const [moved] = newItems.splice(draggedIndex, 1);
+                newItems.splice(targetIndex, 0, moved);
+                $cvStore.skills = newItems;
+            }
+        }
+        dragItemId = null;
+        dragOverItemId = null;
+    }
+
+    function handleDragEnd() {
+        dragItemId = null;
+        dragOverItemId = null;
+    }
 </script>
 
 <div class="bg-white rounded-2xl border-2 border-neutral-200 p-6 shadow-sm">
@@ -42,20 +87,39 @@
     <!-- Liste des compétences (Pills) -->
     <div class="flex flex-wrap gap-2 mb-6">
         {#each $cvStore.skills as skill (skill.id)}
-            <div class="inline-flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-xl border-2 border-neutral-300 bg-neutral-50 text-neutral-900 text-sm font-semibold shadow-sm hover:border-black transition-all">
-                <span>{skill.name}</span>
+            <div
+                class="inline-flex items-center gap-1.5 pl-2 pr-2 py-1.5 rounded-xl border-2 transition-all {dragOverItemId === skill.id ? 'border-black bg-neutral-200 shadow-md' : 'border-neutral-300 bg-neutral-50 hover:border-black'}"
+                on:dragover={(e) => handleDragOver(e, skill.id)}
+                on:dragleave={handleDragLeave}
+                on:drop={(e) => handleDrop(e, skill.id)}
+                on:dragend={handleDragEnd}
+            >
+                <!-- Poignée de glissement -->
+                <button
+                    type="button"
+                    draggable={true}
+                    on:dragstart={(e) => handleDragStart(e, skill.id)}
+                    class="cursor-grab active:cursor-grabbing touch-none text-neutral-400 hover:text-black focus:outline-none"
+                    aria-label="Réorganiser la compétence"
+                >
+                    <Icon icon="mdi:drag" class="w-4 h-4" />
+                </button>
+
+                <!-- Nom -->
+                <span class="text-sm font-semibold text-neutral-900">{skill.name}</span>
                 
                 <!-- Badge Niveau -->
                 <span class={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${levelsMap[skill.level]?.class || levelsMap.intermediate.class}`}>
                     {levelsMap[skill.level]?.label || skill.level}
                 </span>
 
-                <!-- Bouton Suppression -->
+                <!-- Bouton Suppression (non draggable) -->
                 <button
                     type="button"
                     on:click={() => removeSkill(skill.id)}
+                    draggable={false}
                     aria-label={`Supprimer ${skill.name}`}
-                    class="ml-1 p-0.5 text-neutral-400 hover:text-black hover:bg-neutral-200 rounded-md transition-all cursor-pointer"
+                    class="ml-0.5 p-0.5 text-neutral-400 hover:text-black hover:bg-neutral-200 rounded-md transition-all cursor-pointer"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />

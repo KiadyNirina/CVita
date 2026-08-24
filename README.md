@@ -1,8 +1,8 @@
-# Professional CV Creator
+# CVita
 
 > A modern web application for creating, managing, analyzing, and exporting professional CVs.
 
-**Professional CV Creator** is a web-based CV builder built with **SvelteKit** and **Tailwind CSS**. It provides a complete editor, real-time preview, ATS analysis, JSON import/export, and PDF generation.
+**CVita** is a web-based CV builder built with **SvelteKit** and **Tailwind CSS**. It provides a complete editor, real-time preview, ATS analysis, JSON import/export, and PDF generation.
 
 ## 📋 Features
 
@@ -22,17 +22,15 @@
 | **SvelteKit**     | Application framework              |
 | **Tailwind CSS**  | Styling and responsive layout      |
 | **Svelte Stores** | CV state management                |
-| **dom-to-image**  | DOM capture for PDF generation     |
 | **jsPDF**         | PDF generation                     |
-| **date-fns**      | Date formatting and date utilities |
 
 ## 🚀 Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/KiadyNirina/Create_CV.git
-cd Create_CV
+git clone https://github.com/KiadyNirina/CVita.git
+cd CVita
 ```
 
 ### 2. Install dependencies
@@ -53,35 +51,6 @@ Visit:
 
 ```text
 http://localhost:5173
-```
-
-## 📁 Project Structure
-
-```text
-src/
-├── lib/
-│   ├── components/
-│   │   ├── PersonalInfo.svelte
-│   │   ├── ProfessionalSummary.svelte
-│   │   ├── SkillsSection.svelte
-│   │   ├── ExperienceSection.svelte
-│   │   ├── EducationSection.svelte
-│   │   ├── LanguagesSection.svelte
-│   │   ├── Preview.svelte
-│   │   ├── ATSScore.svelte
-│   │   └── ExportButtons.svelte
-│   │
-│   ├── stores/
-│   │   └── cvStore.js
-│   │
-│   └── utils/
-│       ├── dateUtils.js
-│       └── pdfGenerator.js
-│
-├── routes/
-│   └── +page.svelte
-│
-└── app.html
 ```
 
 ## 🔧 Usage

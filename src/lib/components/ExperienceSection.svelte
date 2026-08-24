@@ -1,7 +1,9 @@
 <script>
     import { cvStore, addWorkExperience } from '$lib/stores/cvStore';
-    import { formatToMMYYYY, parseFromMMYYYY } from '$lib/utils/dateUtils';
     import Icon from '@iconify/svelte';
+
+    let dragItemId = null;
+    let dragOverItemId = null;
 
     const removeExperience = (id) => {
         $cvStore.workExperience = $cvStore.workExperience.filter(exp => exp.id !== id);
@@ -16,10 +18,45 @@
         });
     };
 
-    const handleDateInput = (id, field, value) => {
-        const parsedValue = field.endsWith('Date') ? parseFromMMYYYY(value) : value;
-        updateExperience(id, field, parsedValue);
-    };
+    // Gestion du drag
+    function handleDragStart(event, id) {
+        dragItemId = id;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', id);
+    }
+
+    function handleDragOver(event, id) {
+        event.preventDefault();
+        dragOverItemId = id;
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragLeave() {
+        dragOverItemId = null;
+    }
+
+    function handleDrop(event, targetId) {
+        event.preventDefault();
+        const draggedId = dragItemId;
+        if (draggedId && draggedId !== targetId) {
+            const items = $cvStore.workExperience;
+            const draggedIndex = items.findIndex(exp => exp.id === draggedId);
+            const targetIndex = items.findIndex(exp => exp.id === targetId);
+            if (draggedIndex !== -1 && targetIndex !== -1) {
+                const newItems = [...items];
+                const [moved] = newItems.splice(draggedIndex, 1);
+                newItems.splice(targetIndex, 0, moved);
+                $cvStore.workExperience = newItems;
+            }
+        }
+        dragItemId = null;
+        dragOverItemId = null;
+    }
+
+    function handleDragEnd() {
+        dragItemId = null;
+        dragOverItemId = null;
+    }
 </script>
 
 <div class="bg-white rounded-2xl border-2 border-neutral-200 p-4 sm:p-6 shadow-sm">
@@ -56,10 +93,27 @@
         <!-- Experience List -->
         <div class="space-y-6">
             {#each $cvStore.workExperience as exp, index (exp.id)}
-                <div class="relative bg-neutral-50/50 rounded-xl border-2 border-neutral-200 p-4 sm:p-5 space-y-4 hover:border-neutral-400 transition-all">
+                <div
+                    class="relative bg-neutral-50/50 rounded-xl border-2 p-4 sm:p-5 space-y-4 transition-all {dragOverItemId === exp.id ? 'border-black border-dashed bg-neutral-100' : 'border-neutral-200 hover:border-neutral-400'}"
+                    on:dragover={(e) => handleDragOver(e, exp.id)}
+                    on:dragleave={handleDragLeave}
+                    on:drop={(e) => handleDrop(e, exp.id)}
+                    on:dragend={handleDragEnd}
+                >
                     <!-- Card Top Header -->
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-neutral-200">
                         <div class="flex items-center gap-2">
+                            <!-- Poignée de drag -->
+                            <button
+                                type="button"
+                                draggable={true}
+                                on:dragstart={(e) => handleDragStart(e, exp.id)}
+                                class="cursor-grab active:cursor-grabbing touch-none text-neutral-400 hover:text-black focus:outline-none"
+                                aria-label="Réorganiser l'expérience"
+                            >
+                                <Icon icon="mdi:drag" class="w-5 h-5" />
+                            </button>
+
                             <span class="w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
                                 {index + 1}
                             </span>
@@ -114,11 +168,10 @@
                                 Date de début*
                             </label>
                             <input
-                                type="text"
-                                value={formatToMMYYYY(exp.startDate)}
-                                on:input={(e) => handleDateInput(exp.id, 'startDate', e.target.value)}
-                                placeholder="MM/AAAA"
-                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:outline-none transition-all"
+                                type="date"
+                                value={exp.startDate || ''}
+                                on:input={(e) => updateExperience(exp.id, 'startDate', e.target.value)}
+                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 focus:border-black focus:outline-none transition-all"
                             />
                         </div>
 
@@ -126,14 +179,18 @@
                             <label class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-1.5">
                                 Date de fin
                             </label>
-                            <input
-                                type="text"
-                                value={formatToMMYYYY(exp.endDate)}
-                                on:input={(e) => handleDateInput(exp.id, 'endDate', e.target.value)}
-                                placeholder="MM/AAAA"
-                                disabled={exp.current}
-                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:outline-none transition-all disabled:bg-neutral-200 disabled:text-neutral-500 disabled:border-neutral-300"
-                            />
+                            {#if exp.current}
+                                <div class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-100 px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-700">
+                                    Présent
+                                </div>
+                            {:else}
+                                <input
+                                    type="date"
+                                    value={exp.endDate || ''}
+                                    on:input={(e) => updateExperience(exp.id, 'endDate', e.target.value)}
+                                    class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 focus:border-black focus:outline-none transition-all"
+                                />
+                            {/if}
                         </div>
 
                         <div class="pb-1">

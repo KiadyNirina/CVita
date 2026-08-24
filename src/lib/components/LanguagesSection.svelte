@@ -12,6 +12,10 @@
         native: { label: 'Langue maternelle', class: 'bg-black text-amber-400 border-black' }
     };
 
+    // Drag & Drop state
+    let dragItemId = null;
+    let dragOverItemId = null;
+
     const addLanguage = () => {
         if (newLanguage.trim()) {
             $cvStore.languages = [
@@ -29,6 +33,46 @@
     const removeLanguage = (id) => {
         $cvStore.languages = $cvStore.languages.filter(lang => lang.id !== id);
     };
+
+    // Gestion du drag
+    function handleDragStart(event, id) {
+        dragItemId = id;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', id);
+    }
+
+    function handleDragOver(event, id) {
+        event.preventDefault();
+        dragOverItemId = id;
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragLeave() {
+        dragOverItemId = null;
+    }
+
+    function handleDrop(event, targetId) {
+        event.preventDefault();
+        const draggedId = dragItemId;
+        if (draggedId && draggedId !== targetId) {
+            const items = $cvStore.languages;
+            const draggedIndex = items.findIndex(lang => lang.id === draggedId);
+            const targetIndex = items.findIndex(lang => lang.id === targetId);
+            if (draggedIndex !== -1 && targetIndex !== -1) {
+                const newItems = [...items];
+                const [moved] = newItems.splice(draggedIndex, 1);
+                newItems.splice(targetIndex, 0, moved);
+                $cvStore.languages = newItems;
+            }
+        }
+        dragItemId = null;
+        dragOverItemId = null;
+    }
+
+    function handleDragEnd() {
+        dragItemId = null;
+        dragOverItemId = null;
+    }
 </script>
 
 <div class="bg-white rounded-2xl border-2 border-neutral-200 p-4 sm:p-6 shadow-sm">
@@ -46,8 +90,25 @@
     <!-- Liste des langues -->
     <div class="space-y-2.5 mb-6">
         {#each $cvStore.languages as lang (lang.id)}
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50/50 hover:border-neutral-400 transition-all">
+            <div
+                class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl border-2 transition-all {dragOverItemId === lang.id ? 'border-black bg-neutral-100 shadow-sm' : 'border-neutral-200 bg-neutral-50/50 hover:border-neutral-400'}"
+                on:dragover={(e) => handleDragOver(e, lang.id)}
+                on:dragleave={handleDragLeave}
+                on:drop={(e) => handleDrop(e, lang.id)}
+                on:dragend={handleDragEnd}
+            >
                 <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                    <!-- Poignée de glissement -->
+                    <button
+                        type="button"
+                        draggable={true}
+                        on:dragstart={(e) => handleDragStart(e, lang.id)}
+                        class="cursor-grab active:cursor-grabbing touch-none text-neutral-400 hover:text-black focus:outline-none"
+                        aria-label="Réorganiser la langue"
+                    >
+                        <Icon icon="mdi:drag" class="w-5 h-5" />
+                    </button>
+
                     <span class="font-bold text-sm text-neutral-900">{lang.name}</span>
                     
                     <!-- Badge Niveau -->
@@ -56,10 +117,11 @@
                     </span>
                 </div>
 
-                <!-- Bouton Suppression -->
+                <!-- Bouton Suppression (non draggable) -->
                 <button
                     type="button"
                     on:click={() => removeLanguage(lang.id)}
+                    draggable={false}
                     aria-label={`Supprimer ${lang.name}`}
                     class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 sm:px-2.5 sm:py-1 rounded-lg border border-red-200 transition-all cursor-pointer"
                 >
