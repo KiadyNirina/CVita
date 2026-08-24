@@ -1,6 +1,5 @@
 <script>
     import { cvStore } from '$lib/stores/cvStore';
-    import { formatToMMYYYY, parseFromMMYYYY } from '$lib/utils/dateUtils';
     import Icon from '@iconify/svelte';
 
     const addEducation = () => {
@@ -29,11 +28,6 @@
             }
             return edu;
         });
-    };
-
-    const handleDateInput = (id, field, value) => {
-        const parsedValue = field.endsWith('Date') ? parseFromMMYYYY(value) : value;
-        updateEducation(id, field, parsedValue);
     };
 </script>
 
@@ -142,11 +136,10 @@
                                 Date de début*
                             </label>
                             <input
-                                type="text"
-                                value={formatToMMYYYY(edu.startDate)}
-                                on:input={(e) => handleDateInput(edu.id, 'startDate', e.target.value)}
-                                placeholder="MM/AAAA"
-                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:outline-none transition-all"
+                                type="date"
+                                value={edu.startDate || ''}
+                                on:input={(e) => updateEducation(edu.id, 'startDate', e.target.value)}
+                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 focus:border-black focus:outline-none transition-all"
                             />
                         </div>
 
@@ -154,14 +147,18 @@
                             <label class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-1.5">
                                 Date de fin
                             </label>
-                            <input
-                                type="text"
-                                value={formatToMMYYYY(edu.endDate)}
-                                on:input={(e) => handleDateInput(edu.id, 'endDate', e.target.value)}
-                                placeholder="MM/AAAA"
-                                disabled={edu.current}
-                                class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 placeholder-neutral-400 focus:border-black focus:outline-none transition-all disabled:bg-neutral-200 disabled:text-neutral-500 disabled:border-neutral-300"
-                            />
+                            {#if edu.current}
+                                <div class="w-full rounded-xl border-2 border-neutral-300 bg-neutral-100 px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-700">
+                                    Présent
+                                </div>
+                            {:else}
+                                <input
+                                    type="date"
+                                    value={edu.endDate || ''}
+                                    on:input={(e) => updateEducation(edu.id, 'endDate', e.target.value)}
+                                    class="w-full rounded-xl border-2 border-neutral-300 bg-white px-3 py-2 sm:px-3.5 sm:py-2 text-sm font-semibold text-neutral-900 focus:border-black focus:outline-none transition-all"
+                                />
+                            {/if}
                         </div>
                     </div>
 
