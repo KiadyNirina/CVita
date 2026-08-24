@@ -46,7 +46,7 @@
     style="font-family: 'Times New Roman', serif;"
 >
     <!-- En-tête -->
-    <header class="mb-6 pb-6 border-b-2 border-black">
+    <header class="cv-header mb-6 pb-6 border-b-2 border-black">
         <div class="flex items-center gap-6">
             {#if data.personalInfo.image}
                 <img
@@ -116,8 +116,8 @@
 
     <!-- Résumé -->
     {#if data.professionalSummary}
-        <section class="mb-6">
-            <h2 class="text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-2">
+        <section class="cv-section mb-6">
+            <h2 class="cv-section-title text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-2">
                 Profil Professionnel
             </h2>
             <p class="text-xs font-medium text-neutral-700 whitespace-pre-line leading-relaxed">
@@ -128,13 +128,13 @@
 
     <!-- Expériences -->
     {#if data.workExperience.length > 0}
-        <section class="mb-6">
-            <h2 class="text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-3">
+        <section class="cv-section mb-6">
+            <h2 class="cv-section-title text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-3">
                 Expérience Professionnelle
             </h2>
-            <div class="space-y-4">
+            <div class="cv-section-items space-y-4">
                 {#each data.workExperience as exp}
-                    <div class="pl-3 border-l-2 border-black">
+                    <div class="cv-item pl-3 border-l-2 border-black">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
                             <h3 class="text-sm font-bold text-black">
                                 {exp.jobTitle} 
@@ -162,13 +162,13 @@
 
     <!-- Formation -->
     {#if data.education.length > 0}
-        <section class="mb-6">
-            <h2 class="text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-3">
+        <section class="cv-section mb-6">
+            <h2 class="cv-section-title text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-3">
                 Formation
             </h2>
-            <div class="space-y-3">
+            <div class="cv-section-items space-y-3">
                 {#each data.education as edu}
-                    <div class="pl-3 border-l-2 border-black">
+                    <div class="cv-item pl-3 border-l-2 border-black">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
                             <h3 class="text-sm font-bold text-black">
                                 {edu.degree} 
