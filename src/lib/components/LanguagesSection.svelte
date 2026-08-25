@@ -1,9 +1,11 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
 
     let newLanguage = '';
     let proficiency = 'intermediate';
+    let isRestored = false;
 
     const proficiencyMap = {
         basic: { label: 'Notions', class: 'bg-neutral-100 text-neutral-800 border-neutral-300' },
@@ -15,6 +17,28 @@
     // Drag & Drop state
     let dragItemId = null;
     let dragOverItemId = null;
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvLanguages');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    const valid = parsed.filter(lang => lang && typeof lang === 'object' && lang.id);
+                    if (valid.length > 0) {
+                        cvStore.update(s => ({ ...s, languages: valid }));
+                    }
+                }
+            } catch (e) {
+                console.error('Erreur lors de la restauration des langues :', e);
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.languages) {
+        localStorage.setItem('cvLanguages', JSON.stringify($cvStore.languages));
+    }
 
     const addLanguage = () => {
         if (newLanguage.trim()) {
