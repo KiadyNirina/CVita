@@ -111,9 +111,12 @@
                 const importedData = JSON.parse(content);
                 validateCVData(importedData);
 
+                const currentTemplate = $cvStore.selectedTemplate;
+
                 cvStore.set({
                     ...createEmptyCV(),
                     ...importedData,
+                    selectedTemplate: currentTemplate,
                     personalInfo: {
                         ...createEmptyCV().personalInfo,
                         ...(importedData.personalInfo || {})
