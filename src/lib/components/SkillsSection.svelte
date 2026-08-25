@@ -1,9 +1,11 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
 
     let newSkill = '';
     let skillLevel = 'intermediate';
+    let isRestored = false;
 
     const levelsMap = {
         beginner: { label: 'Débutant', class: 'bg-neutral-100 text-neutral-800 border-neutral-300' },
@@ -15,6 +17,28 @@
     // Drag & Drop state
     let dragItemId = null;
     let dragOverItemId = null;
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvSkills');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    const validSkills = parsed.filter(s => s && typeof s === 'object' && s.id && s.name);
+                    if (validSkills.length > 0) {
+                        cvStore.update(s => ({ ...s, skills: validSkills }));
+                    }
+                }
+            } catch (e) {
+                console.error('Erreur lors de la restauration des compétences :', e);
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.skills) {
+        localStorage.setItem('cvSkills', JSON.stringify($cvStore.skills));
+    }
 
     const addSkill = () => {
         if (newSkill.trim()) {
