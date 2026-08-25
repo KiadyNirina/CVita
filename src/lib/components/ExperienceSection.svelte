@@ -1,9 +1,33 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore, addWorkExperience } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
 
     let dragItemId = null;
     let dragOverItemId = null;
+    let isRestored = false;
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvWorkExperience');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    const valid = parsed.filter(exp => exp && typeof exp === 'object' && exp.id);
+                    if (valid.length > 0) {
+                        cvStore.update(s => ({ ...s, workExperience: valid }));
+                    }
+                }
+            } catch (e) {
+                console.error('Erreur lors de la restauration des expériences :', e);
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.workExperience) {
+        localStorage.setItem('cvWorkExperience', JSON.stringify($cvStore.workExperience));
+    }
 
     const removeExperience = (id) => {
         $cvStore.workExperience = $cvStore.workExperience.filter(exp => exp.id !== id);
