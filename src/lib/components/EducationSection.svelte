@@ -1,9 +1,33 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
 
     let dragItemId = null;
     let dragOverItemId = null;
+    let isRestored = false;
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvEducation');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    const valid = parsed.filter(edu => edu && typeof edu === 'object' && edu.id);
+                    if (valid.length > 0) {
+                        cvStore.update(s => ({ ...s, education: valid }));
+                    }
+                }
+            } catch (e) {
+                console.error('Erreur lors de la restauration des formations :', e);
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.education) {
+        localStorage.setItem('cvEducation', JSON.stringify($cvStore.education));
+    }
 
     const addEducation = () => {
         $cvStore.education = [
