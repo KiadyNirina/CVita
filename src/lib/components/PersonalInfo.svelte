@@ -1,10 +1,13 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
     
     let imageUrl = '';
     let imageError = false;
     let validationMessage = '';
+
+    let isRestored = false;
 
     const socialOptions = [
         { label: 'Facebook', value: 'facebook' },
@@ -31,6 +34,30 @@
     // Initialiser le tableau socials s'il n'existe pas
     if (!$cvStore.personalInfo.socials) {
         $cvStore.personalInfo.socials = [];
+    }
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvPersonalInfo');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                cvStore.update(s => ({
+                    ...s,
+                    personalInfo: {
+                        ...s.personalInfo,
+                        ...parsed,
+                        socials: Array.isArray(parsed.socials) ? parsed.socials : s.personalInfo.socials
+                    }
+                }));
+            } catch (e) {
+                console.error('Erreur lors de la restauration des infos personnelles :', e);
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.personalInfo) {
+        localStorage.setItem('cvPersonalInfo', JSON.stringify($cvStore.personalInfo));
     }
 
     function addSocial() {

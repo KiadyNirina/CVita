@@ -1,9 +1,25 @@
 <script>
+    import { onMount } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import Icon from '@iconify/svelte';
 
     let showHelp = false;
     let wordCount = 0;
+    let isRestored = false;
+
+    onMount(() => {
+        const saved = localStorage.getItem('cvProfessionalSummary');
+        if (saved !== null) {
+            if ($cvStore.professionalSummary !== saved) {
+                cvStore.update(s => ({ ...s, professionalSummary: saved }));
+            }
+        }
+        isRestored = true;
+    });
+
+    $: if (isRestored && $cvStore.professionalSummary !== undefined) {
+        localStorage.setItem('cvProfessionalSummary', $cvStore.professionalSummary);
+    }
 
     $: {
         if ($cvStore.professionalSummary) {

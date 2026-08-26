@@ -1,6 +1,8 @@
 <!-- $lib/components/templates/MinimalTemplate.svelte -->
 <script>
     import { formatDate, calculateDuration } from '$lib/utils/templateUtils';
+    import Icon from '@iconify/svelte';
+
     export let data;
     export let fullMode = false;
 
@@ -10,76 +12,249 @@
         fluent: 'Courant',
         native: 'Langue maternelle'
     };
+
+    const socialIconMap = {
+        facebook: 'mdi:facebook',
+        twitter: 'mdi:twitter',
+        instagram: 'mdi:instagram',
+        youtube: 'mdi:youtube',
+        tiktok: 'mdi:tiktok',
+        snapchat: 'mdi:snapchat',
+        pinterest: 'mdi:pinterest',
+        reddit: 'mdi:reddit',
+        whatsapp: 'mdi:whatsapp',
+        telegram: 'mdi:telegram',
+        discord: 'mdi:discord',
+        mastodon: 'mdi:mastodon',
+        other: 'mdi:link-variant',
+        linkedin: 'mdi:linkedin',
+        github: 'mdi:github'
+    };
+
+    function getSocialIcon(label) {
+        if (!label) return 'mdi:link-variant';
+        const key = label.toLowerCase().trim();
+        return socialIconMap[key] || 'mdi:link-variant';
+    }
 </script>
 
-<div id="cv-preview" class="bg-white w-[210mm] min-h-[297mm] p-[12mm] mx-auto font-serif shadow-xl rounded-2xl border-2 border-neutral-200" style="font-family: 'Georgia', serif;">
-    <h1 class="text-5xl font-thin tracking-widest uppercase text-center">{data.personalInfo?.name || 'Nom'}</h1>
-    <p class="text-center text-sm uppercase tracking-wider text-neutral-500">{data.personalInfo?.cvTitle}</p>
-    <div class="flex justify-center gap-4 text-xs text-neutral-600 mt-2">
-        <span>{data.personalInfo?.email}</span>
-        <span>•</span>
-        <span>{data.personalInfo?.phone}</span>
-        <span>•</span>
-        <span>{data.personalInfo?.address}</span>
-    </div>
-    <hr class="my-6 border-neutral-300" />
+<div
+    id="cv-preview"
+    class="cv-container bg-white w-[210mm] min-h-[297mm] p-[12mm] mx-auto font-serif shadow-xl rounded-2xl border-2 border-neutral-200"
+    style="font-family: 'Georgia', serif;"
+>
+    <!-- ===== EN-TÊTE ===== -->
+    <header class="cv-header text-center mb-6 pb-4 border-b border-neutral-300">
+        <h1 class="text-5xl font-thin tracking-widest uppercase">{data.personalInfo?.name || 'Nom'}</h1>
+        {#if data.personalInfo?.cvTitle}
+            <p class="text-sm uppercase tracking-wider text-neutral-500 mt-1">{data.personalInfo.cvTitle}</p>
+        {/if}
 
+        <!-- Coordonnées + réseaux sociaux -->
+        <div class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-neutral-600 mt-3">
+            {#if data.personalInfo?.email}
+                <span class="flex items-center gap-1.5">
+                    <Icon icon="mdi:email" class="w-3.5 h-3.5 text-neutral-700" />
+                    {data.personalInfo.email}
+                </span>
+            {/if}
+            {#if data.personalInfo?.phone}
+                <span class="flex items-center gap-1.5">
+                    <Icon icon="mdi:phone" class="w-3.5 h-3.5 text-neutral-700" />
+                    {data.personalInfo.phone}
+                </span>
+            {/if}
+            {#if data.personalInfo?.address}
+                <span class="flex items-center gap-1.5">
+                    <Icon icon="mdi:map-marker" class="w-3.5 h-3.5 text-neutral-700" />
+                    {data.personalInfo.address}
+                </span>
+            {/if}
+            {#if data.personalInfo?.linkedin}
+                <span class="flex items-center gap-1.5">
+                    <Icon icon="mdi:linkedin" class="w-3.5 h-3.5 text-neutral-700" />
+                    {data.personalInfo.linkedin}
+                </span>
+            {/if}
+            {#if data.personalInfo?.github}
+                <span class="flex items-center gap-1.5">
+                    <Icon icon="mdi:github" class="w-3.5 h-3.5 text-neutral-700" />
+                    {data.personalInfo.github}
+                </span>
+            {/if}
+            <!-- Réseaux sociaux additionnels -->
+            {#if data.personalInfo?.socials}
+                {#each data.personalInfo.socials as social}
+                    <span class="flex items-center gap-1.5">
+                        <Icon icon={getSocialIcon(social.label)} class="w-3.5 h-3.5 text-neutral-700" />
+                        {social.url}
+                    </span>
+                {/each}
+            {/if}
+        </div>
+    </header>
+
+    <!-- ===== RÉSUMÉ ===== -->
     {#if data.professionalSummary}
-        <section class="mb-6">
-            <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">Résumé</h2>
-            <p class="text-sm text-neutral-700 mt-2">{data.professionalSummary}</p>
+        <section class="cv-section mb-5">
+            <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                Résumé
+            </h2>
+            <p class="text-sm text-neutral-700 mt-2 leading-relaxed">{data.professionalSummary}</p>
         </section>
     {/if}
 
+    <!-- ===== EXPÉRIENCES ===== -->
     {#if data.workExperience.length > 0}
-        <section class="mb-6">
-            <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">Expériences</h2>
-            {#each data.workExperience as exp}
-                <div class="mt-3">
-                    <div class="flex justify-between items-baseline">
-                        <h3 class="font-bold text-sm">{exp.jobTitle} – {exp.employer}</h3>
-                        <span class="text-xs text-neutral-500">{formatDate(exp.startDate)} – {exp.current ? 'Présent' : formatDate(exp.endDate)}</span>
+        <section class="cv-section mb-5">
+            <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                Expériences
+            </h2>
+            <div class="cv-section-items space-y-3 mt-2">
+                {#each data.workExperience as exp}
+                    <div class="cv-item">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                            <h3 class="font-bold text-sm">
+                                {exp.jobTitle}
+                                {#if exp.employer}
+                                    <span class="font-normal text-neutral-600">– {exp.employer}</span>
+                                {/if}
+                            </h3>
+                            <div class="text-xs text-neutral-500 mt-0.5 sm:mt-0">
+                                <span>{formatDate(exp.startDate)} – {exp.current ? 'Présent' : formatDate(exp.endDate)}</span>
+                                {#if calculateDuration(exp.startDate, exp.endDate, exp.current)}
+                                    <span class="ml-1 text-neutral-400">({calculateDuration(exp.startDate, exp.endDate, exp.current)})</span>
+                                {/if}
+                            </div>
+                        </div>
+                        {#if exp.description}
+                            <p class="text-xs text-neutral-600 mt-1 leading-relaxed">{exp.description}</p>
+                        {/if}
                     </div>
-                    {#if exp.description}
-                        <p class="text-xs text-neutral-600 mt-1">{exp.description}</p>
-                    {/if}
-                </div>
-            {/each}
+                {/each}
+            </div>
         </section>
     {/if}
 
+    <!-- ===== FORMATION ===== -->
     {#if data.education.length > 0}
-        <section class="mb-6">
-            <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">Formation</h2>
-            {#each data.education as edu}
-                <div class="mt-2 flex justify-between items-baseline">
-                    <span class="font-bold text-sm">{edu.degree} – {edu.institution}</span>
-                    <span class="text-xs text-neutral-500">{formatDate(edu.startDate)} – {formatDate(edu.endDate)}</span>
-                </div>
-                {#if edu.field}
-                    <p class="text-xs text-neutral-600">{edu.field}</p>
-                {/if}
-            {/each}
+        <section class="cv-section mb-5">
+            <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                Formation
+            </h2>
+            <div class="cv-section-items space-y-2 mt-2">
+                {#each data.education as edu}
+                    <div class="cv-item">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                            <span class="font-bold text-sm">
+                                {edu.degree}
+                                {#if edu.institution}
+                                    <span class="font-normal text-neutral-600">– {edu.institution}</span>
+                                {/if}
+                            </span>
+                            <span class="text-xs text-neutral-500 mt-0.5 sm:mt-0">
+                                {formatDate(edu.startDate)} – {edu.current ? 'Présent' : formatDate(edu.endDate)}
+                            </span>
+                        </div>
+                        {#if edu.field}
+                            <p class="text-xs text-neutral-600 mt-0.5">{edu.field}</p>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
         </section>
     {/if}
 
-    <div class="grid grid-cols-2 gap-6 mt-6">
+    <!-- ===== CERTIFICATIONS ===== -->
+    {#if data.certifications?.length > 0}
+        <section class="cv-section mb-5">
+            <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                Certifications
+            </h2>
+            <div class="cv-section-items space-y-1 mt-2">
+                {#each data.certifications as cert}
+                    <div class="cv-item flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                        <span class="font-bold text-sm">
+                            {cert.name}
+                            {#if cert.issuer}
+                                <span class="font-normal text-neutral-600">– {cert.issuer}</span>
+                            {/if}
+                        </span>
+                        {#if cert.date}
+                            <span class="text-xs text-neutral-500 mt-0.5 sm:mt-0">{formatDate(cert.date)}</span>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
+
+    <!-- ===== PROJETS ===== -->
+    {#if data.projects?.length > 0}
+        <section class="cv-section mb-5">
+            <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                Projets
+            </h2>
+            <div class="cv-section-items space-y-2 mt-2">
+                {#each data.projects as project}
+                    <div class="cv-item">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                            <h3 class="font-bold text-sm">
+                                {project.name}
+                                {#if project.role}
+                                    <span class="font-normal text-neutral-600">– {project.role}</span>
+                                {/if}
+                            </h3>
+                            {#if project.date}
+                                <span class="text-xs text-neutral-500 mt-0.5 sm:mt-0">{formatDate(project.date)}</span>
+                            {/if}
+                        </div>
+                        {#if project.description}
+                            <p class="text-xs text-neutral-600 mt-1 leading-relaxed">{project.description}</p>
+                        {/if}
+                        {#if project.technologies}
+                            <p class="text-[10px] text-neutral-500 mt-0.5">
+                                <span class="font-bold">Technologies :</span> {project.technologies}
+                            </p>
+                        {/if}
+                        {#if project.link}
+                            <a href={project.link} target="_blank" rel="noopener noreferrer"
+                               class="text-xs text-neutral-600 underline underline-offset-2 hover:text-neutral-900">
+                                {project.link}
+                            </a>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
+
+    <!-- ===== COMPÉTENCES & LANGUES (côte à côte) ===== -->
+    <div class="grid grid-cols-2 gap-6 mt-4">
         {#if data.skills.length > 0}
-            <div>
-                <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">Compétences</h2>
-                <ul class="mt-2 text-sm list-disc list-inside">
+            <div class="cv-section">
+                <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                    Compétences
+                </h2>
+                <ul class="mt-2 text-sm list-disc list-inside space-y-0.5">
                     {#each data.skills as skill}
-                        <li>{skill.name}</li>
+                        <li class="text-neutral-700">{skill.name}</li>
                     {/each}
                 </ul>
             </div>
         {/if}
+
         {#if data.languages.length > 0}
-            <div>
-                <h2 class="text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">Langues</h2>
-                <ul class="mt-2 text-sm list-disc list-inside">
+            <div class="cv-section">
+                <h2 class="cv-section-title text-sm font-bold uppercase tracking-wider text-neutral-400 border-b border-neutral-200 pb-1">
+                    Langues
+                </h2>
+                <ul class="mt-2 text-sm list-disc list-inside space-y-0.5">
                     {#each data.languages as lang}
-                        <li>{lang.name} ({proficiencyLabels[lang.proficiency] || lang.proficiency})</li>
+                        <li class="text-neutral-700">
+                            {lang.name}
+                            <span class="text-xs text-neutral-500">({proficiencyLabels[lang.proficiency] || lang.proficiency})</span>
+                        </li>
                     {/each}
                 </ul>
             </div>
