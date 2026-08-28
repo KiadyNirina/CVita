@@ -7,6 +7,7 @@
     import AtmosphericTemplate from './templates/AtmosphericTemplate.svelte';
     import CartoonTemplate from './templates/CartoonTemplate.svelte';
     import BloomTemplate from './templates/BloomTemplate.svelte';
+    import TerminalTemplate from './templates/TerminalTemplate.svelte';
 
     export let fullMode = false;
 
@@ -19,7 +20,8 @@
         minimal: MinimalTemplate,
         atmospheric: AtmosphericTemplate,
         cartoon: CartoonTemplate,
-        bloom: BloomTemplate
+        bloom: BloomTemplate,
+        terminal: TerminalTemplate,
     };
 </script>
 

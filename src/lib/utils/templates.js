@@ -35,5 +35,11 @@ export const templates = [
         label: 'Bloom',
         description: 'Un design féminin, élégant et éditorial inspiré de la papeterie florale.',
         thumbnail: '/images/templates/bloom.png'
+    },
+    {
+        id: 'terminal',
+        label: 'Terminal',
+        description: 'Design inspiré des terminaux et éditeurs de code, idéal pour les profils tech.',
+        thumbnail: '/images/templates/terminal.png'
     }
 ];
