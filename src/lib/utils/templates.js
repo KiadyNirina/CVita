@@ -17,5 +17,29 @@ export const templates = [
         label: 'Minimaliste',
         description: 'Beaucoup d’espace, typographie fine, très épuré.',
         thumbnail: '/images/templates/minimal.png'
+    },
+    {
+        id: 'atmospheric',
+        label: 'Atmosphérique',
+        description: 'Design élégant et immersif avec des tons sombres, des formes douces et une ambiance contemporaine.',
+        thumbnail: '/images/templates/atmospheric.png'
+    },
+    {
+        id: 'cartoon',
+        label: 'Cartoon',
+        description: 'Un design créatif et ludique inspiré du dessin animé.',
+        thumbnail: '/images/templates/cartoon.png'
+    },
+    {
+        id: 'bloom',
+        label: 'Bloom',
+        description: 'Un design féminin, élégant et éditorial inspiré de la papeterie florale.',
+        thumbnail: '/images/templates/bloom.png'
+    },
+    {
+        id: 'terminal',
+        label: 'Terminal',
+        description: 'Design inspiré des terminaux et éditeurs de code, idéal pour les profils tech.',
+        thumbnail: '/images/templates/terminal.png'
     }
 ];

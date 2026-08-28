@@ -4,6 +4,10 @@
     import ClassicTemplate from './templates/ClassicTemplate.svelte';
     import ModernTemplate from './templates/ModernTemplate.svelte';
     import MinimalTemplate from './templates/MinimalTemplate.svelte';
+    import AtmosphericTemplate from './templates/AtmosphericTemplate.svelte';
+    import CartoonTemplate from './templates/CartoonTemplate.svelte';
+    import BloomTemplate from './templates/BloomTemplate.svelte';
+    import TerminalTemplate from './templates/TerminalTemplate.svelte';
 
     export let fullMode = false;
 
@@ -13,7 +17,11 @@
     const templateComponents = {
         classic: ClassicTemplate,
         modern: ModernTemplate,
-        minimal: MinimalTemplate
+        minimal: MinimalTemplate,
+        atmospheric: AtmosphericTemplate,
+        cartoon: CartoonTemplate,
+        bloom: BloomTemplate,
+        terminal: TerminalTemplate,
     };
 </script>
 

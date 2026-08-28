@@ -1,4 +1,5 @@
 <!-- src/lib/components/A4Paginator.svelte -->
+
 <script>
     import { onMount, tick } from 'svelte';
     import A4Scaler from '$lib/components/A4Scaler.svelte';
@@ -7,73 +8,163 @@
     export let templateComponent;
     export let fullMode = false;
 
+    /*
+     * ============================================================
+     * CONFIGURATION A4
+     * ============================================================
+     */
+
     const MM_TO_PX = 96 / 25.4;
+
     const PAGE_WIDTH_MM = 210;
     const PAGE_HEIGHT_MM = 297;
+
     const PAGE_PADDING_MM = 12;
 
+    const PAGE_WIDTH_PX = PAGE_WIDTH_MM * MM_TO_PX;
     const PAGE_HEIGHT_PX = PAGE_HEIGHT_MM * MM_TO_PX;
     const PAGE_PADDING_PX = PAGE_PADDING_MM * MM_TO_PX;
 
-    // Hauteur réellement disponible à l'intérieur d'une page A4
+    /*
+     * Hauteur disponible pour le contenu.
+     *
+     * 297mm - 12mm haut - 12mm bas
+     */
     const CONTENT_HEIGHT_PX =
         PAGE_HEIGHT_PX - (PAGE_PADDING_PX * 2);
 
+
+    /*
+     * ============================================================
+     * VARIABLES
+     * ============================================================
+     */
+
     let sourceContainer;
+
     let pagesHtml = [];
+
     let paginationToken = 0;
 
+
+    /*
+     * ============================================================
+     * MESURE
+     * ============================================================
+     */
+
     function getOuterHeight(element) {
+        if (!element) return 0;
+
         const rect = element.getBoundingClientRect();
         const style = getComputedStyle(element);
 
-        const marginTop = parseFloat(style.marginTop) || 0;
-        const marginBottom = parseFloat(style.marginBottom) || 0;
+        const marginTop =
+            parseFloat(style.marginTop) || 0;
+
+        const marginBottom =
+            parseFloat(style.marginBottom) || 0;
 
         return rect.height + marginTop + marginBottom;
     }
+
+
+    /*
+     * ============================================================
+     * CLONAGE
+     * ============================================================
+     */
 
     function cloneHtml(element) {
         return element.outerHTML;
     }
 
-    /**
-     * Retourne les sections et leurs éléments internes.
+
+    /*
+     * ============================================================
+     * EXTRACTION DE LA STRUCTURE
+     * ============================================================
      *
-     * Une section peut donc être répartie sur plusieurs pages.
+     * Structure attendue :
+     *
+     * .cv-header
+     *
+     * .cv-section
+     *     .cv-section-title
+     *     .cv-section-items
+     *         .cv-item
+     *         .cv-item
+     *
+     * Une section peut donc être divisée entre plusieurs pages.
+     *
+     * Mais chaque .cv-item reste indivisible.
      */
+
     function extractStructure(root) {
-        const children = Array.from(root.children);
+        const children =
+            Array.from(root.children);
 
         const result = [];
 
         for (const element of children) {
-            // Header : bloc indivisible
+
+            /*
+             * ----------------------------------------------------
+             * HEADER
+             * ----------------------------------------------------
+             */
+
             if (element.matches('.cv-header')) {
+
                 result.push({
                     type: 'standalone',
                     element
                 });
+
                 continue;
             }
 
-            // Section CV
-            if (element.matches('.cv-section')) {
-                const content = element.querySelector('.cv-section-items');
 
-                // Section sans items internes
+            /*
+             * ----------------------------------------------------
+             * SECTION
+             * ----------------------------------------------------
+             */
+
+            if (element.matches('.cv-section')) {
+
+                const content =
+                    element.querySelector(
+                        '.cv-section-items'
+                    );
+
+                /*
+                 * Section sans .cv-section-items.
+                 */
                 if (!content) {
+
                     result.push({
-                        type: 'section',
-                        section: element,
-                        items: []
+                        type: 'standalone',
+                        element
                     });
+
                     continue;
                 }
 
-                const items = Array.from(
-                    content.querySelectorAll(':scope > .cv-item')
-                );
+
+                /*
+                 * IMPORTANT :
+                 *
+                 * On récupère UNIQUEMENT les .cv-item
+                 * enfants directs.
+                 */
+                const items =
+                    Array.from(
+                        content.querySelectorAll(
+                            ':scope > .cv-item'
+                        )
+                    );
+
 
                 result.push({
                     type: 'section',
@@ -85,8 +176,13 @@
                 continue;
             }
 
-            // Compatibilité avec les éléments qui n'ont pas encore
-            // reçu les classes cv-header / cv-section.
+
+            /*
+             * ----------------------------------------------------
+             * AUTRE BLOC
+             * ----------------------------------------------------
+             */
+
             result.push({
                 type: 'standalone',
                 element
@@ -96,311 +192,667 @@
         return result;
     }
 
-    /**
-     * Récupère uniquement le titre d'une section.
+
+    /*
+     * ============================================================
+     * CONSTRUIRE UNE SECTION
+     * ============================================================
+     *
+     * Reconstruit une section avec uniquement les items demandés.
      */
-    function getSectionHeader(section) {
-        const title = section.querySelector('.cv-section-title');
 
-        if (!title) {
-            return '';
-        }
-
-        return title.outerHTML;
-    }
-
-    /**
-     * Récupère le HTML d'une section avec seulement
-     * les éléments qui doivent apparaître sur la page.
-     */
     function buildSectionHtml(section, items) {
-        const sectionClone = section.cloneNode(true);
+
+        const sectionClone =
+            section.cloneNode(true);
 
         const contentClone =
-            sectionClone.querySelector('.cv-section-items');
+            sectionClone.querySelector(
+                '.cv-section-items'
+            );
 
         if (!contentClone) {
             return sectionClone.outerHTML;
         }
 
-        contentClone.innerHTML = items
-            .map(item => item.outerHTML)
-            .join('');
+
+        /*
+         * On supprime complètement les anciens items.
+         */
+        contentClone.innerHTML = '';
+
+
+        /*
+         * On remet uniquement les items de cette page.
+         */
+        for (const item of items) {
+            contentClone.appendChild(
+                item.cloneNode(true)
+            );
+        }
+
 
         return sectionClone.outerHTML;
     }
 
-    /**
-     * Calcule la hauteur du titre d'une section.
+
+    /*
+     * ============================================================
+     * MESURER UNE SECTION
+     * ============================================================
+     *
+     * Création temporaire dans le DOM réel.
+     *
+     * C'est beaucoup plus fiable que d'additionner simplement
+     * les hauteurs des .cv-item.
      */
-    function getSectionHeaderHeight(section) {
-        const title = section.querySelector('.cv-section-title');
 
-        if (!title) {
-            return 0;
-        }
+    function measureSection(section, items) {
 
-        return getOuterHeight(title);
+        const wrapper =
+            document.createElement('div');
+
+        wrapper.style.position = 'absolute';
+        wrapper.style.left = '-99999px';
+        wrapper.style.top = '0';
+
+        wrapper.style.width =
+            `${PAGE_WIDTH_PX}px`;
+
+        wrapper.style.visibility = 'hidden';
+        wrapper.style.pointerEvents = 'none';
+
+        /*
+         * On utilise exactement la même structure
+         * que celle envoyée dans la page.
+         */
+        wrapper.innerHTML =
+            buildSectionHtml(section, items);
+
+
+        document.body.appendChild(wrapper);
+
+
+        const measuredSection =
+            wrapper.firstElementChild;
+
+
+        const height =
+            getOuterHeight(measuredSection);
+
+
+        wrapper.remove();
+
+
+        return height;
     }
 
+
+    /*
+     * ============================================================
+     * MESURER UN BLOC
+     * ============================================================
+     */
+
+    function measureElement(element) {
+
+        const wrapper =
+            document.createElement('div');
+
+        wrapper.style.position = 'absolute';
+        wrapper.style.left = '-99999px';
+        wrapper.style.top = '0';
+
+        wrapper.style.width =
+            `${PAGE_WIDTH_PX}px`;
+
+        wrapper.style.visibility = 'hidden';
+        wrapper.style.pointerEvents = 'none';
+
+
+        wrapper.innerHTML =
+            element.outerHTML;
+
+
+        document.body.appendChild(wrapper);
+
+
+        const clone =
+            wrapper.firstElementChild;
+
+
+        const height =
+            getOuterHeight(clone);
+
+
+        wrapper.remove();
+
+
+        return height;
+    }
+
+
+    /*
+     * ============================================================
+     * PAGINATION
+     * ============================================================
+     */
+
     async function paginate() {
-        const token = ++paginationToken;
+
+        const token =
+            ++paginationToken;
+
 
         await tick();
 
-        if (token !== paginationToken) return;
-        if (!sourceContainer || !data) return;
 
-        const root = sourceContainer.firstElementChild;
-
-        if (!root) return;
-
-        const structure = extractStructure(root);
-
-        if (!structure.length) {
-            pagesHtml = [];
+        if (token !== paginationToken) {
             return;
         }
 
+
+        if (!sourceContainer || !data) {
+            return;
+        }
+
+
+        const root =
+            sourceContainer.firstElementChild;
+
+
+        if (!root) {
+            return;
+        }
+
+
+        /*
+         * --------------------------------------------------------
+         * EXTRACTION
+         * --------------------------------------------------------
+         */
+
+        const structure =
+            extractStructure(root);
+
+
+        if (!structure.length) {
+
+            pagesHtml = [];
+
+            return;
+        }
+
+
+        /*
+         * --------------------------------------------------------
+         * PAGES
+         * --------------------------------------------------------
+         */
+
         const newPages = [];
 
+
+        /*
+         * Une page contient maintenant des blocs HTML.
+         */
         let currentPage = [];
+
         let currentHeight = 0;
 
+
+        /*
+         * --------------------------------------------------------
+         * NOUVELLE PAGE
+         * --------------------------------------------------------
+         */
+
         function pushPage() {
+
             if (currentPage.length > 0) {
-                newPages.push(currentPage.join(''));
+
+                newPages.push(
+                    currentPage.join('')
+                );
             }
 
+
             currentPage = [];
+
             currentHeight = 0;
         }
 
-        function addStandalone(element) {
-            const height = getOuterHeight(element);
 
+        /*
+         * --------------------------------------------------------
+         * AJOUTER UN BLOC INDIVISIBLE
+         * --------------------------------------------------------
+         */
+
+        function addStandalone(element) {
+
+            const height =
+                measureElement(element);
+
+
+            /*
+             * Le bloc ne rentre pas.
+             */
             if (
                 currentPage.length > 0 &&
-                currentHeight + height > CONTENT_HEIGHT_PX
+                currentHeight + height >
+                    CONTENT_HEIGHT_PX
             ) {
+
                 pushPage();
             }
 
-            currentPage.push(cloneHtml(element));
+
+            currentPage.push(
+                cloneHtml(element)
+            );
+
+
             currentHeight += height;
         }
 
+
+        /*
+         * --------------------------------------------------------
+         * PARCOURS
+         * --------------------------------------------------------
+         */
+
         for (const block of structure) {
-            /**
-             * HEADER / bloc simple
-             */
-            if (block.type === 'standalone') {
-                addStandalone(block.element);
-                continue;
-            }
 
-            /**
-             * SECTION
-             */
-            const section = block.section;
-            const items = block.items;
-
-            // Section sans items internes
-            if (!items.length) {
-                const height = getOuterHeight(section);
-
-                if (
-                    currentPage.length > 0 &&
-                    currentHeight + height > CONTENT_HEIGHT_PX
-                ) {
-                    pushPage();
-                }
-
-                currentPage.push(cloneHtml(section));
-                currentHeight += height;
-
-                continue;
-            }
 
             /*
-             * On mesure le titre de section.
-             *
-             * Pour les sections qui continuent sur une autre page,
-             * le titre sera automatiquement remis.
+             * ====================================================
+             * BLOC SIMPLE
+             * ====================================================
              */
-            const sectionHeaderHeight =
-                getSectionHeaderHeight(section);
 
-            let firstItemOfSection = true;
+            if (block.type === 'standalone') {
 
-            for (const item of items) {
-                const itemHeight = getOuterHeight(item);
+                addStandalone(
+                    block.element
+                );
+
+                continue;
+            }
+
+
+            /*
+             * ====================================================
+             * SECTION
+             * ====================================================
+             */
+
+            const section =
+                block.section;
+
+            const items =
+                block.items;
+
+
+            /*
+             * ----------------------------------------------------
+             * SECTION SANS ITEMS
+             * ----------------------------------------------------
+             */
+
+            if (!items.length) {
+
+                addStandalone(section);
+
+                continue;
+            }
+
+
+            /*
+             * ----------------------------------------------------
+             * ITEMS DE LA SECTION
+             * ----------------------------------------------------
+             *
+             * On conserve une liste explicite des items
+             * actuellement présents dans la section.
+             */
+
+            let sectionItems = [];
+
+
+            /*
+             * ====================================================
+             * ITEM PAR ITEM
+             * ====================================================
+             */
+
+            for (let i = 0; i < items.length; i++) {
+
+                const item =
+                    items[i];
+
 
                 /*
-                 * Premièrement :
-                 * si c'est le premier élément de la section,
-                 * il faut prendre en compte le titre.
+                 * =================================================
+                 * CAS 1 :
+                 * La section n'a encore aucun item sur cette page.
+                 * =================================================
                  */
-                if (firstItemOfSection) {
-                    const requiredHeight =
-                        sectionHeaderHeight + itemHeight;
+
+                if (sectionItems.length === 0) {
+
 
                     /*
-                     * La section ne commence pas sur la page courante.
-                     * On la place sur une nouvelle page si nécessaire.
+                     * On teste la section complète
+                     * avec cet item.
                      */
+                    const testHeight =
+                        measureSection(
+                            section,
+                            [item]
+                        );
+
+
+                    /*
+                     * ------------------------------------------------
+                     * L'item + titre de section ne rentrent pas.
+                     * ------------------------------------------------
+                     */
+
                     if (
                         currentPage.length > 0 &&
-                        currentHeight + requiredHeight > CONTENT_HEIGHT_PX
+                        currentHeight + testHeight >
+                            CONTENT_HEIGHT_PX
                     ) {
+
+                        /*
+                         * On descend l'item sur la page suivante.
+                         */
                         pushPage();
                     }
 
+
                     /*
-                     * Si même le titre + l'item ne rentrent pas,
-                     * on place quand même l'item seul.
+                     * Maintenant on teste encore.
                      *
-                     * Cela évite une boucle infinie avec un élément
-                     * exceptionnellement grand.
+                     * Cela gère le cas où on vient de changer
+                     * de page.
                      */
-                    if (
-                        currentHeight === 0 &&
-                        requiredHeight > CONTENT_HEIGHT_PX
-                    ) {
-                        currentPage.push(
-                            buildSectionHtml(section, [item])
+                    const finalHeight =
+                        measureSection(
+                            section,
+                            [item]
                         );
 
-                        currentHeight += requiredHeight;
-                        firstItemOfSection = false;
+
+                    /*
+                     * Même seul, l'item dépasse une page.
+                     *
+                     * On le place quand même.
+                     *
+                     * Cela évite une boucle infinie.
+                     */
+                    if (
+                        finalHeight >
+                            CONTENT_HEIGHT_PX &&
+                        currentPage.length === 0
+                    ) {
+
+                        currentPage.push(
+                            buildSectionHtml(
+                                section,
+                                [item]
+                            )
+                        );
+
+                        currentHeight =
+                            finalHeight;
+
+                        sectionItems =
+                            [item];
 
                         continue;
                     }
 
+
                     /*
-                     * On ajoute temporairement l'item.
-                     * La section complète sera reconstruite ensuite.
+                     * L'item rentre.
                      */
                     currentPage.push(
-                        buildSectionHtml(section, [item])
+                        buildSectionHtml(
+                            section,
+                            [item]
+                        )
                     );
 
-                    currentHeight += requiredHeight;
-                    firstItemOfSection = false;
+
+                    currentHeight +=
+                        finalHeight;
+
+
+                    sectionItems =
+                        [item];
+
 
                     continue;
                 }
 
+
                 /*
-                 * Les éléments suivants de la même section.
+                 * =================================================
+                 * CAS 2 :
+                 * La section existe déjà sur cette page.
+                 * =================================================
                  */
-                if (
-                    currentHeight + itemHeight > CONTENT_HEIGHT_PX
-                ) {
-                    /*
-                     * Nouvelle page.
-                     *
-                     * On répète le titre de la section en mettant
-                     * l'élément suivant dans une nouvelle section.
-                     */
-                    pushPage();
 
-                    const requiredHeight =
-                        sectionHeaderHeight + itemHeight;
-
-                    currentPage.push(
-                        buildSectionHtml(section, [item])
-                    );
-
-                    currentHeight += requiredHeight;
-
-                    continue;
-                }
 
                 /*
-                 * Il faut maintenant fusionner l'item à la section
-                 * déjà présente sur la page.
+                 * On teste la section avec :
                  *
-                 * On remplace le dernier HTML de la page.
+                 * anciens items + nouvel item
                  */
-                const lastIndex = currentPage.length - 1;
+                const candidateItems = [
+                    ...sectionItems,
+                    item
+                ];
 
-                if (lastIndex >= 0) {
-                    const currentSectionHtml =
-                        currentPage[lastIndex];
+
+                const candidateHeight =
+                    measureSection(
+                        section,
+                        candidateItems
+                    );
+
+
+                /*
+                 * ------------------------------------------------
+                 * L'item rentre dans la section actuelle.
+                 * ------------------------------------------------
+                 */
+
+                if (
+                    currentHeight -
+                    measureSection(
+                        section,
+                        sectionItems
+                    ) +
+                    candidateHeight <=
+                    CONTENT_HEIGHT_PX
+                ) {
 
                     /*
-                     * On reconstruit la section à partir des items
-                     * déjà présents + le nouvel item.
-                     *
-                     * Pour garder le système simple, on utilise
-                     * les items déjà présents dans currentPage.
+                     * On remplace la section actuelle
+                     * par sa nouvelle version.
                      */
-                    const parser = new DOMParser();
-
-                    const parsed =
-                        parser.parseFromString(
-                            currentSectionHtml,
-                            'text/html'
+                    const sectionHtml =
+                        buildSectionHtml(
+                            section,
+                            candidateItems
                         );
 
-                    const existingSection =
-                        parsed.body.firstElementChild;
 
-                    const existingItems =
-                        existingSection
-                            ?.querySelector('.cv-section-items');
+                    /*
+                     * La section est toujours le dernier
+                     * bloc ajouté à la page à cet endroit.
+                     */
+                    const lastIndex =
+                        currentPage.length - 1;
 
-                    if (existingItems) {
-                        existingItems.insertAdjacentHTML(
-                            'beforeend',
-                            item.outerHTML
+
+                    currentPage[lastIndex] =
+                        sectionHtml;
+
+
+                    /*
+                     * Recalcul réel de la hauteur.
+                     */
+                    const previousSectionHeight =
+                        measureSection(
+                            section,
+                            sectionItems
                         );
 
-                        currentPage[lastIndex] =
-                            existingSection.outerHTML;
-                    } else {
-                        currentPage.push(
-                            buildSectionHtml(section, [item])
-                        );
-                    }
+
+                    currentHeight -=
+                        previousSectionHeight;
+
+
+                    currentHeight +=
+                        candidateHeight;
+
+
+                    sectionItems =
+                        candidateItems;
+
+
+                    continue;
                 }
 
-                currentHeight += itemHeight;
+
+                /*
+                 * =================================================
+                 * CAS 3 :
+                 * Le nouvel item ne rentre pas.
+                 * =================================================
+                 */
+
+                /*
+                 * IMPORTANT :
+                 *
+                 * On crée une nouvelle page.
+                 *
+                 * Les anciens items restent sur la page précédente.
+                 */
+                pushPage();
+
+
+                /*
+                 * Le nouvel item devient le premier item
+                 * de la section sur la nouvelle page.
+                 */
+                const newSectionHeight =
+                    measureSection(
+                        section,
+                        [item]
+                    );
+
+
+                /*
+                 * Même principe :
+                 * section + item peuvent dépasser.
+                 */
+                currentPage.push(
+                    buildSectionHtml(
+                        section,
+                        [item]
+                    )
+                );
+
+
+                currentHeight =
+                    newSectionHeight;
+
+
+                sectionItems =
+                    [item];
             }
         }
 
+
+        /*
+         * --------------------------------------------------------
+         * DERNIERE PAGE
+         * --------------------------------------------------------
+         */
+
         pushPage();
 
-        pagesHtml = newPages;
+
+        /*
+         * --------------------------------------------------------
+         * RESULTAT
+         * --------------------------------------------------------
+         */
+
+        pagesHtml =
+            newPages;
     }
 
+
+    /*
+     * ============================================================
+     * INITIALISATION
+     * ============================================================
+     */
+
     onMount(() => {
+
         paginate();
 
-        const observer = new ResizeObserver(() => {
-            paginate();
-        });
+
+        const observer =
+            new ResizeObserver(() => {
+
+                paginate();
+
+            });
+
 
         if (sourceContainer) {
-            observer.observe(sourceContainer);
+
+            observer.observe(
+                sourceContainer
+            );
         }
 
+
         return () => {
+
             observer.disconnect();
+
         };
     });
 
-    // Recalcule lorsque les données du CV changent
+
+    /*
+     * ============================================================
+     * REACTIVITE
+     * ============================================================
+     */
+
     $: if (data) {
+
         paginate();
+
     }
 </script>
 
-<!--
-    Zone invisible utilisée uniquement pour mesurer
-    le vrai contenu du template.
--->
+
+<!-- ============================================================= -->
+<!-- ZONE DE MESURE                                               -->
+<!-- ============================================================= -->
+
 <div
     class="hidden-measure"
     bind:this={sourceContainer}
@@ -412,45 +864,96 @@
     />
 </div>
 
-<!-- Pages A4 -->
+
+<!-- ============================================================= -->
+<!-- PAGES A4                                                     -->
+<!-- ============================================================= -->
+
 <A4Scaler>
+
     <div
         class="a4-pages"
         id="a4-pages"
     >
+
         {#each pagesHtml as pageHtml, i}
+
             <div
                 class="a4-page"
                 data-page={i + 1}
             >
+
                 {@html pageHtml}
+
             </div>
+
         {/each}
+
     </div>
+
 </A4Scaler>
 
+
 <style>
+
+    /*
+     * ============================================================
+     * ZONE DE MESURE
+     * ============================================================
+     */
+
     .hidden-measure {
+
         position: absolute;
+
         left: -99999px;
+
         top: 0;
+
         width: 210mm;
+
         visibility: hidden;
+
         pointer-events: none;
+
     }
+
+
+    /*
+     * ============================================================
+     * PAGES
+     * ============================================================
+     */
 
     .a4-pages {
+
         display: flex;
+
         flex-direction: column;
+
         align-items: center;
+
         gap: 20px;
+
         padding: 20px 0;
+
     }
 
+
+    /*
+     * ============================================================
+     * PAGE A4
+     * ============================================================
+     */
+
     .a4-page {
+
         width: 210mm;
+
         height: 297mm;
+
         min-height: 297mm;
+
         padding: 12mm;
 
         box-sizing: border-box;
@@ -459,55 +962,92 @@
 
         overflow: hidden;
 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        box-shadow:
+            0 10px 30px
+            rgba(0, 0, 0, 0.15);
 
-        border: 1px solid #d1d4dad4;
+        border:
+            1px solid
+            #d1d4dad4;
+
         border-radius: 4px;
 
         page-break-after: always;
+
         break-after: page;
 
-        /*
-         * Important :
-         * on ne met PAS break-inside: avoid sur toute la page
-         * car le contenu est déjà découpé par notre paginator.
-         */
     }
 
+
     /*
-     * Les éléments individuels du CV ne doivent pas être coupés
-     * entre deux pages lors de l'impression.
+     * ============================================================
+     * ITEMS INDIVISIBLES
+     * ============================================================
      */
+
     .a4-page :global(.cv-item) {
+
         break-inside: avoid;
+
         page-break-inside: avoid;
+
     }
 
+
     /*
-     * Une section peut continuer sur la page suivante.
+     * ============================================================
+     * SECTIONS
+     * ============================================================
+     *
+     * Une section peut continuer sur plusieurs pages.
      */
+
     .a4-page :global(.cv-section) {
+
         break-inside: auto;
+
         page-break-inside: auto;
+
     }
+
+
+    /*
+     * ============================================================
+     * PRINT
+     * ============================================================
+     */
 
     @media print {
+
         .a4-pages {
+
             gap: 0;
+
             padding: 0;
+
         }
 
+
         .a4-page {
+
             width: 210mm;
+
             height: 297mm;
+
             min-height: 297mm;
 
             box-shadow: none;
+
             border: none;
+
             border-radius: 0;
 
             page-break-after: always;
+
             break-after: page;
+
         }
+
     }
+
 </style>
