@@ -5,6 +5,7 @@
     import ModernTemplate from './templates/ModernTemplate.svelte';
     import MinimalTemplate from './templates/MinimalTemplate.svelte';
     import AtmosphericTemplate from './templates/AtmosphericTemplate.svelte';
+    import CartoonTemplate from './templates/CartoonTemplate.svelte';
 
     export let fullMode = false;
 
@@ -16,6 +17,7 @@
         modern: ModernTemplate,
         minimal: MinimalTemplate,
         atmospheric: AtmosphericTemplate,
+        cartoon: CartoonTemplate,
     };
 </script>
 

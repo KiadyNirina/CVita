@@ -23,5 +23,11 @@ export const templates = [
         label: 'Atmosphérique',
         description: 'Design élégant et immersif avec des tons sombres, des formes douces et une ambiance contemporaine.',
         thumbnail: '/images/templates/atmospheric.png'
+    },
+    {
+        id: 'cartoon',
+        label: 'Cartoon',
+        description: 'Un design créatif et ludique inspiré du dessin animé.',
+        thumbnail: '/images/templates/cartoon.png'
     }
 ];
