@@ -29,5 +29,11 @@ export const templates = [
         label: 'Cartoon',
         description: 'Un design créatif et ludique inspiré du dessin animé.',
         thumbnail: '/images/templates/cartoon.png'
+    },
+    {
+        id: 'bloom',
+        label: 'Bloom',
+        description: 'Un design féminin, élégant et éditorial inspiré de la papeterie florale.',
+        thumbnail: '/images/templates/bloom.png'
     }
 ];
