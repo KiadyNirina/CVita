@@ -17,5 +17,11 @@ export const templates = [
         label: 'Minimaliste',
         description: 'Beaucoup d’espace, typographie fine, très épuré.',
         thumbnail: '/images/templates/minimal.png'
+    },
+    {
+        id: 'atmospheric',
+        label: 'Atmosphérique',
+        description: 'Design élégant et immersif avec des tons sombres, des formes douces et une ambiance contemporaine.',
+        thumbnail: '/images/templates/atmospheric.png'
     }
 ];

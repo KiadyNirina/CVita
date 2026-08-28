@@ -4,6 +4,7 @@
     import ClassicTemplate from './templates/ClassicTemplate.svelte';
     import ModernTemplate from './templates/ModernTemplate.svelte';
     import MinimalTemplate from './templates/MinimalTemplate.svelte';
+    import AtmosphericTemplate from './templates/AtmosphericTemplate.svelte';
 
     export let fullMode = false;
 
@@ -13,7 +14,8 @@
     const templateComponents = {
         classic: ClassicTemplate,
         modern: ModernTemplate,
-        minimal: MinimalTemplate
+        minimal: MinimalTemplate,
+        atmospheric: AtmosphericTemplate,
     };
 </script>
 

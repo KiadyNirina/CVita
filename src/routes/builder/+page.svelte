@@ -11,6 +11,7 @@
     import ExportButtons from '$lib/components/ExportButtons.svelte';
     import TemplateSelector from '$lib/components/TemplateSelector.svelte';
     import A4Scaler from '$lib/components/A4Scaler.svelte';
+    import SimpleA4Paginator from '../../lib/components/SimplePaginator.svelte';
     import Icon from '@iconify/svelte';
     import { page } from '$app/stores';
     
