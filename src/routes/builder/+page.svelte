@@ -84,6 +84,7 @@
             </header>
 
             <nav class="md:flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
+                <!-- Onglet Modèles (toujours visible) -->
                 <button
                     type="button"
                     class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
@@ -97,6 +98,7 @@
                     <span class="hidden sm:inline" class:inline={activeTab === 'templates'}>Modèles</span>
                 </button>
 
+                <!-- Onglet Éditeur (toujours visible) -->
                 <button 
                     type="button"
                     class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
@@ -110,31 +112,37 @@
                     <span class="hidden sm:inline" class:inline={activeTab === 'edit'}>Éditeur</span>
                 </button>
 
-                <button 
-                    type="button"
-                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
-                        activeTab === 'preview' 
-                            ? 'bg-black text-white' 
-                            : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
-                    }`}
-                    on:click={() => activeTab = 'preview'}
-                >
-                    <Icon icon="mdi:eye" class="w-4 h-4" />
-                    <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
-                </button>
+                <!-- Onglet Aperçu A4 (affiché seulement si on n'est pas sur l'onglet Modèles) -->
+                {#if activeTab !== 'templates'}
+                    <button 
+                        type="button"
+                        class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                            activeTab === 'preview' 
+                                ? 'bg-black text-white' 
+                                : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
+                        }`}
+                        on:click={() => activeTab = 'preview'}
+                    >
+                        <Icon icon="mdi:eye" class="w-4 h-4" />
+                        <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
+                    </button>
+                {/if}
 
-                <button 
-                    type="button"
-                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
-                        activeTab === 'ats' 
-                            ? 'bg-black text-white' 
-                            : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
-                    }`}
-                    on:click={() => activeTab = 'ats'}
-                >
-                    <Icon icon="mdi:check-circle" class="w-4 h-4" />
-                    <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
-                </button>
+                <!-- Onglet Analyse ATS (affiché seulement si on n'est pas sur l'onglet Modèles) -->
+                {#if activeTab !== 'templates'}
+                    <button 
+                        type="button"
+                        class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                            activeTab === 'ats' 
+                                ? 'bg-black text-white' 
+                                : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
+                        }`}
+                        on:click={() => activeTab = 'ats'}
+                    >
+                        <Icon icon="mdi:check-circle" class="w-4 h-4" />
+                        <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
+                    </button>
+                {/if}
             </nav>
         </div>
 
@@ -155,26 +163,55 @@
                         <LanguagesSection />
                     </div>
 
-                    <!-- Colonne droite : fixe (sticky) -->
+                    <!-- Colonne droite : fixe (sticky) avec aperçu et analyse ATS + boutons -->
                     <div class="w-full lg:w-5/12 xl:w-5/12 sticky top-[140px] z-5">
                         <div class="flex flex-col gap-6">
-                            <ATSScore />
+                            <!-- Carte ATS avec bouton "Voir l'analyse complète" -->
+                            <div class="rounded-2xl border-2 border-neutral-200 bg-white p-5 shadow-sm">
+                                <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-neutral-100">
+                                    <span class="text-xs font-black uppercase tracking-wider text-black">
+                                        Compatibilité ATS
+                                    </span>
+                                    <button
+                                        type="button"
+                                        on:click={() => activeTab = 'ats'}
+                                        class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-neutral-600 hover:text-black hover:bg-neutral-200/60 px-2 py-1 rounded-md transition-colors"
+                                        aria-label="Voir l'analyse ATS complète"
+                                    >
+                                        <Icon icon="mdi:arrow-expand" class="w-4 h-4" />
+                                        <span class="hidden sm:inline">Analyse complète</span>
+                                    </button>
+                                </div>
+                                <ATSScore />
+                            </div>
+
+                            <!-- Carte Aperçu avec bouton "Plein écran" -->
                             <div class="rounded-2xl border-2 border-neutral-200 bg-white p-5 shadow-sm">
                                 <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-neutral-100">
                                     <span class="text-xs font-black uppercase tracking-wider text-black">
                                         Aperçu direct (A4)
                                     </span>
-                                    <span class="flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        En direct
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            En direct
+                                        </span>
+                                        <!-- Bouton Plein écran -->
+                                        <button
+                                            type="button"
+                                            on:click={() => activeTab = 'preview'}
+                                            class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-neutral-600 hover:text-black hover:bg-neutral-200/60 px-2 py-1 rounded-md transition-colors"
+                                            aria-label="Ouvrir l'aperçu en plein écran"
+                                        >
+                                            <Icon icon="mdi:fullscreen" class="w-4 h-4" />
+                                            <span class="hidden sm:inline">Plein écran</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                    <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                        <A4Scaler maxScale={0.7}>
-                                            <Preview />
-                                        </A4Scaler>
-                                    </div>
+                                    <A4Scaler maxScale={0.7}>
+                                        <Preview />
+                                    </A4Scaler>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +227,7 @@
                             Sélectionnez la mise en page qui correspond le mieux à votre profil
                         </p>
                     </div>
-                    <TemplateSelector expanded={true} />
+                    <TemplateSelector expanded={true} on:selectTemplate={() => activeTab = 'edit'} />
                 </div>
 
             <!-- VUE : APERÇU PLEIN ÉCRAN -->
