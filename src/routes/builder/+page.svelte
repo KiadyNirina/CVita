@@ -84,6 +84,7 @@
             </header>
 
             <nav class="md:flex gap-3 border-b-2 border-neutral-200 pb-px mt-2">
+                <!-- Onglet Modèles (toujours visible) -->
                 <button
                     type="button"
                     class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
@@ -97,6 +98,7 @@
                     <span class="hidden sm:inline" class:inline={activeTab === 'templates'}>Modèles</span>
                 </button>
 
+                <!-- Onglet Éditeur (toujours visible) -->
                 <button 
                     type="button"
                     class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
@@ -110,31 +112,37 @@
                     <span class="hidden sm:inline" class:inline={activeTab === 'edit'}>Éditeur</span>
                 </button>
 
-                <button 
-                    type="button"
-                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
-                        activeTab === 'preview' 
-                            ? 'bg-black text-white' 
-                            : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
-                    }`}
-                    on:click={() => activeTab = 'preview'}
-                >
-                    <Icon icon="mdi:eye" class="w-4 h-4" />
-                    <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
-                </button>
+                <!-- Onglet Aperçu A4 (affiché seulement si on n'est pas sur l'onglet Modèles) -->
+                {#if activeTab !== 'templates'}
+                    <button 
+                        type="button"
+                        class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                            activeTab === 'preview' 
+                                ? 'bg-black text-white' 
+                                : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
+                        }`}
+                        on:click={() => activeTab = 'preview'}
+                    >
+                        <Icon icon="mdi:eye" class="w-4 h-4" />
+                        <span class="hidden sm:inline" class:inline={activeTab === 'preview'}>Aperçu A4</span>
+                    </button>
+                {/if}
 
-                <button 
-                    type="button"
-                    class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
-                        activeTab === 'ats' 
-                            ? 'bg-black text-white' 
-                            : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
-                    }`}
-                    on:click={() => activeTab = 'ats'}
-                >
-                    <Icon icon="mdi:check-circle" class="w-4 h-4" />
-                    <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
-                </button>
+                <!-- Onglet Analyse ATS (affiché seulement si on n'est pas sur l'onglet Modèles) -->
+                {#if activeTab !== 'templates'}
+                    <button 
+                        type="button"
+                        class={`inline-flex items-center gap-2 px-2 py-1.5 text-[10px] sm:px-5 sm:py-3 sm:text-xs font-black uppercase tracking-wider transition-all rounded-t-xl cursor-pointer ${
+                            activeTab === 'ats' 
+                                ? 'bg-black text-white' 
+                                : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-200/60 border-2 border-b-0 border-neutral-200'
+                        }`}
+                        on:click={() => activeTab = 'ats'}
+                    >
+                        <Icon icon="mdi:check-circle" class="w-4 h-4" />
+                        <span class="hidden sm:inline" class:inline={activeTab === 'ats'}>Analyse ATS</span>
+                    </button>
+                {/if}
             </nav>
         </div>
 
