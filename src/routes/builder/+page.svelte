@@ -163,7 +163,7 @@
                         <LanguagesSection />
                     </div>
 
-                    <!-- Colonne droite : fixe (sticky) -->
+                    <!-- Colonne droite : fixe (sticky) avec aperçu et bouton plein écran -->
                     <div class="w-full lg:w-5/12 xl:w-5/12 sticky top-[140px] z-5">
                         <div class="flex flex-col gap-6">
                             <ATSScore />
@@ -172,17 +172,27 @@
                                     <span class="text-xs font-black uppercase tracking-wider text-black">
                                         Aperçu direct (A4)
                                     </span>
-                                    <span class="flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        En direct
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex items-center gap-1.5 text-[10px] font-bold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            En direct
+                                        </span>
+                                        <!-- Bouton Plein écran -->
+                                        <button
+                                            type="button"
+                                            on:click={() => activeTab = 'preview'}
+                                            class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-neutral-600 hover:text-black hover:bg-neutral-200/60 px-2 py-1 rounded-md transition-colors"
+                                            aria-label="Ouvrir l'aperçu en plein écran"
+                                        >
+                                            <Icon icon="mdi:fullscreen" class="w-4 h-4" />
+                                            <span class="hidden sm:inline">Plein écran</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                    <div class="overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 p-2 max-h-[500px] overflow-y-auto">
-                                        <A4Scaler maxScale={0.7}>
-                                            <Preview />
-                                        </A4Scaler>
-                                    </div>
+                                    <A4Scaler maxScale={0.7}>
+                                        <Preview />
+                                    </A4Scaler>
                                 </div>
                             </div>
                         </div>
