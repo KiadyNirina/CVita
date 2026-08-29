@@ -163,10 +163,29 @@
                         <LanguagesSection />
                     </div>
 
-                    <!-- Colonne droite : fixe (sticky) avec aperçu et bouton plein écran -->
+                    <!-- Colonne droite : fixe (sticky) avec aperçu et analyse ATS + boutons -->
                     <div class="w-full lg:w-5/12 xl:w-5/12 sticky top-[140px] z-5">
                         <div class="flex flex-col gap-6">
-                            <ATSScore />
+                            <!-- Carte ATS avec bouton "Voir l'analyse complète" -->
+                            <div class="rounded-2xl border-2 border-neutral-200 bg-white p-5 shadow-sm">
+                                <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-neutral-100">
+                                    <span class="text-xs font-black uppercase tracking-wider text-black">
+                                        Compatibilité ATS
+                                    </span>
+                                    <button
+                                        type="button"
+                                        on:click={() => activeTab = 'ats'}
+                                        class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-neutral-600 hover:text-black hover:bg-neutral-200/60 px-2 py-1 rounded-md transition-colors"
+                                        aria-label="Voir l'analyse ATS complète"
+                                    >
+                                        <Icon icon="mdi:arrow-expand" class="w-4 h-4" />
+                                        <span class="hidden sm:inline">Analyse complète</span>
+                                    </button>
+                                </div>
+                                <ATSScore />
+                            </div>
+
+                            <!-- Carte Aperçu avec bouton "Plein écran" -->
                             <div class="rounded-2xl border-2 border-neutral-200 bg-white p-5 shadow-sm">
                                 <div class="flex items-center justify-between mb-4 pb-3 border-b-2 border-neutral-100">
                                     <span class="text-xs font-black uppercase tracking-wider text-black">
