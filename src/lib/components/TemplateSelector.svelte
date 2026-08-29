@@ -1,6 +1,6 @@
 <!-- $lib/components/TemplateSelector.svelte -->
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import { templates } from '$lib/utils/templates';
 
@@ -10,13 +10,25 @@
         localStorage.setItem('selectedTemplate', $cvStore.selectedTemplate);
     }
 
-    onMount(() => {
+    onMount(async () => {
         const saved = localStorage.getItem('selectedTemplate');
         if (saved && templates.some(t => t.id === saved)) {
             cvStore.update(s => ({ ...s, selectedTemplate: saved }));
         }
         isMounted = true;
+
+        await tick();
+        scrollToSelectedTemplate();
     });
+
+    function scrollToSelectedTemplate() {
+        const selectedId = $cvStore.selectedTemplate;
+        if (!selectedId) return;
+        const element = document.querySelector(`[data-template-id="${selectedId}"]`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
 
     function selectTemplate(id) {
         cvStore.update(s => ({ ...s, selectedTemplate: id }));
@@ -29,6 +41,7 @@
         {#each templates as template}
             <button
                 type="button"
+                data-template-id={template.id}
                 class="relative p-3 rounded-xl border-2 transition-all text-left
                     {$cvStore.selectedTemplate === template.id
                         ? 'border-black bg-neutral-100 shadow-sm'
