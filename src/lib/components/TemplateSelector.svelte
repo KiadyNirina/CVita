@@ -1,10 +1,14 @@
 <!-- $lib/components/TemplateSelector.svelte -->
 <script>
     import { onMount, tick } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import { cvStore } from '$lib/stores/cvStore';
     import { templates } from '$lib/utils/templates';
+    import Icon from '@iconify/svelte';
 
+    const dispatch = createEventDispatcher();
     let isMounted = false;
+    let isLoading = false;
 
     $: if (isMounted && $cvStore.selectedTemplate) {
         localStorage.setItem('selectedTemplate', $cvStore.selectedTemplate);
@@ -33,9 +37,19 @@
     function selectTemplate(id) {
         cvStore.update(s => ({ ...s, selectedTemplate: id }));
     }
+
+    function confirmSelection() {
+        if (isLoading) return;
+        isLoading = true;
+
+        setTimeout(() => {
+            dispatch('selectTemplate', { templateId: $cvStore.selectedTemplate });
+            isLoading = false;
+        }, 300);
+    }
 </script>
 
-<div class="mb-6">
+<div class="mb-6 relative">
     <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Modèles de CV</h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {#each templates as template}
@@ -67,4 +81,23 @@
             </button>
         {/each}
     </div>
+
+    <!-- Bouton fixe "Choisir ce modèle" (apparaît uniquement si un modèle est sélectionné) -->
+    {#if $cvStore.selectedTemplate}
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-30">
+            <button
+                type="button"
+                on:click={confirmSelection}
+                class="bg-black text-white px-8 py-3 rounded-full font-black uppercase text-sm tracking-wider shadow-lg hover:bg-neutral-800 transition-colors flex items-center gap-2"
+            >
+                {#if isLoading}
+                    <Icon icon="mdi:loading" class="w-5 h-5 animate-spin" />
+                    <span>Chargement...</span>
+                {:else}
+                    <Icon icon="mdi:check" class="w-5 h-5" />
+                    <span>Choisir ce modèle</span>
+                {/if}
+            </button>
+        </div>
+    {/if}
 </div>

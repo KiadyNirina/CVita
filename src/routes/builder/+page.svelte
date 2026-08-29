@@ -227,7 +227,7 @@
                             Sélectionnez la mise en page qui correspond le mieux à votre profil
                         </p>
                     </div>
-                    <TemplateSelector expanded={true} />
+                    <TemplateSelector expanded={true} on:selectTemplate={() => activeTab = 'edit'} />
                 </div>
 
             <!-- VUE : APERÇU PLEIN ÉCRAN -->
