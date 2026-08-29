@@ -89,13 +89,6 @@
 
                 <div class="min-w-0 flex-1">
 
-                    <div
-                        class="mb-1 text-[9px] font-semibold uppercase tracking-[0.3em] text-slate-400"
-                    >
-                        Curriculum Vitae
-                    </div>
-
-
                     <h1
                         class="text-3xl font-black uppercase tracking-tight text-white"
                     >
