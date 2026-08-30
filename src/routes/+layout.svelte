@@ -1,5 +1,16 @@
 <script>
     import { page } from '$app/stores';
+    import { onMount } from 'svelte';
+    import { afterNavigate } from '$app/navigation';
+    import { initGoogleAnalytics, trackPageView } from '$lib/analytics';
+
+    onMount(() => {
+        initGoogleAnalytics();
+    });
+
+    afterNavigate(() => {
+        trackPageView();
+    });
 </script>
 
 <main>
