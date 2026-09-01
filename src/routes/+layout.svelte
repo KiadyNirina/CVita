@@ -3,9 +3,19 @@
     import { onMount } from 'svelte';
     import { afterNavigate } from '$app/navigation';
     import { initGoogleAnalytics, trackPageView } from '$lib/analytics';
+    import { registerSW } from 'virtual:pwa-register';
 
     onMount(() => {
         initGoogleAnalytics();
+        registerSW({
+            immediate: true,
+            onNeedRefresh() {
+                console.log('Une nouvelle version est disponible');
+            },
+            onOfflineReady() {
+                console.log('L’application est prête à fonctionner hors ligne');
+            }
+        });
     });
 
     afterNavigate(() => {
