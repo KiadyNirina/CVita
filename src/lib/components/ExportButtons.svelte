@@ -3,6 +3,8 @@
     import { generatePDF } from '$lib/utils/pdfGenerator';
     import Icon from '@iconify/svelte';
 
+    export let showImport = true;
+
     let fileInput;
     let isExportingPdf = false;
     let isImporting = false;
@@ -225,6 +227,7 @@
             {/if}
         </button>
 
+        {#if showImport}
         <!-- Export JSON -->
         <button
             type="button"
@@ -259,6 +262,7 @@
             class="hidden"
             on:change={handleImport}
         />
+        {/if}
     </div>
 
     <!-- Affichage des messages d'importation -->
