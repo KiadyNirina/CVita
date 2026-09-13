@@ -135,7 +135,7 @@
                         </div>
                         <div class="hidden lg:block">
                             {#if activeTab === 'edit' || activeTab === 'preview'}
-                                <ExportButtons />
+                                <ExportButtons showImport={activeTab === 'edit'} />
                             {/if}
                         </div>
                     </div>
@@ -347,7 +347,7 @@
     </div>
     {#if activeTab === 'edit' || activeTab === 'preview'}
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-neutral-200 p-3 flex justify-center gap-4 lg:hidden z-20">
-            <ExportButtons />
+            <ExportButtons showImport={activeTab === 'edit'} />
         </div>
     {/if}
 

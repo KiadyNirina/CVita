@@ -31,10 +31,22 @@ export const templates = [
         thumbnail: '/images/templates/cartoon.png'
     },
     {
+        id: 'shinobi',
+        label: 'Shinobi',
+        description: 'Un CV inspiré des univers de ninjas, avec parchemins, missions, rangs et techniques.',
+        thumbnail: '/images/templates/shinobi.png'
+    },
+    {
         id: 'bloom',
         label: 'Bloom',
         description: 'Un design féminin, élégant et éditorial inspiré de la papeterie florale.',
         thumbnail: '/images/templates/bloom.png'
+    },
+    {
+        id: 'feminine',
+        label: 'Féminin',
+        description: 'Un CV féminin élégant inspiré du design éditorial et de la mode.',
+        thumbnail: '/images/templates/feminine.png'
     },
     {
         id: 'terminal',

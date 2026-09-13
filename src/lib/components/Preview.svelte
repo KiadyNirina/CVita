@@ -8,6 +8,8 @@
     import CartoonTemplate from './templates/CartoonTemplate.svelte';
     import BloomTemplate from './templates/BloomTemplate.svelte';
     import TerminalTemplate from './templates/TerminalTemplate.svelte';
+    import FeminineTemplate from './templates/FeminineTemplate.svelte';
+    import ShinobiTemplate from './templates/ShinobiTemplate.svelte';
 
     export let fullMode = false;
 
@@ -20,8 +22,10 @@
         minimal: MinimalTemplate,
         atmospheric: AtmosphericTemplate,
         cartoon: CartoonTemplate,
+        shinobi: ShinobiTemplate,
         bloom: BloomTemplate,
         terminal: TerminalTemplate,
+        feminine: FeminineTemplate
     };
 </script>
 

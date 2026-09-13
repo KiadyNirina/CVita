@@ -3,9 +3,50 @@
 <script>
     import { formatDate, calculateDuration } from '$lib/utils/templateUtils';
     import Icon from '@iconify/svelte';
+    import { onMount } from 'svelte';
 
     export let data;
     export let fullMode = false;
+
+    let nameElement;
+    let nameFontSize = 3;
+
+    function adjustNameSize() {
+        if (!nameElement) return;
+
+        const container = nameElement.parentElement;
+
+        let size = 3;
+        const minSize = 1.5;
+
+        nameElement.style.fontSize = `${size}rem`;
+
+        while (
+            nameElement.scrollWidth > container.clientWidth &&
+            size > minSize
+        ) {
+            size -= 0.1;
+            nameElement.style.fontSize = `${size}rem`;
+        }
+
+        nameFontSize = size;
+    }
+
+    onMount(() => {
+        adjustNameSize();
+
+        const resizeObserver = new ResizeObserver(() => {
+            adjustNameSize();
+        });
+
+        if (nameElement?.parentElement) {
+            resizeObserver.observe(nameElement.parentElement);
+        }
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    });
 
     const proficiencyLabels = {
         basic: 'Notions',
@@ -55,8 +96,11 @@
 <header class="cv-header mb-6 pb-5 border-b border-neutral-300">
 
     <div class="text-center">
-
-        <h1 class="text-5xl font-thin tracking-widest uppercase">
+        <h1
+            bind:this={nameElement}
+            class="font-thin tracking-widest uppercase whitespace-nowrap overflow-hidden"
+            style={`font-size: ${nameFontSize}rem;`}
+        >
             {data.personalInfo?.name || 'Nom'}
         </h1>
 
