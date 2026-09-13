@@ -37,6 +37,12 @@ export const templates = [
         thumbnail: '/images/templates/bloom.png'
     },
     {
+        id: 'feminine',
+        label: 'Féminin',
+        description: 'Un CV féminin élégant inspiré du design éditorial et de la mode.',
+        thumbnail: '/images/templates/feminine.png'
+    },
+    {
         id: 'terminal',
         label: 'Terminal',
         description: 'Design inspiré des terminaux et éditeurs de code, idéal pour les profils tech.',

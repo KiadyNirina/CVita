@@ -8,6 +8,7 @@
     import CartoonTemplate from './templates/CartoonTemplate.svelte';
     import BloomTemplate from './templates/BloomTemplate.svelte';
     import TerminalTemplate from './templates/TerminalTemplate.svelte';
+    import FeminineTemplate from './templates/FeminineTemplate.svelte';
 
     export let fullMode = false;
 
@@ -22,6 +23,7 @@
         cartoon: CartoonTemplate,
         bloom: BloomTemplate,
         terminal: TerminalTemplate,
+        feminine: FeminineTemplate
     };
 </script>
 
