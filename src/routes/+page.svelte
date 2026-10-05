@@ -161,7 +161,7 @@
 
     <main class="w-full">
         <!-- 1. HERO SECTION -->
-        <section class="max-w-6xl mx-auto px-4 py-16 md:py-24" use:reveal>
+        <section class="max-w-6xl mx-auto px-4 py-16 md:py-24 h-screen flex" use:reveal>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- Colonne gauche : texte et boutons -->
                 <div class="text-left">
@@ -244,7 +244,7 @@
         <MobileInstallSection />
 
         <!-- 4. AVANTAGES -->
-        <section id="features" class="max-w-6xl mx-auto px-4 py-20">
+        <section id="features" class="max-w-6xl mx-auto px-4 py-20 md:py-50">
             <div class="text-center mb-12" use:reveal>
                 <h2 class="text-xs font-black text-neutral-500 uppercase tracking-widest mb-2">
                     Avantages
@@ -275,7 +275,7 @@
                                 Analyse ATS Intégrée
                             </h3>
 
-                            <p class="text-xs font-semibold text-neutral-500 mt-3 leading-relaxed">
+                            <p class="text-xs md:text-base font-medium text-neutral-500 mt-3 leading-relaxed">
                                 Évaluez instantanément la lisibilité de votre CV par les systèmes
                                 de recrutement grâce à notre score ATS.
                             </p>
@@ -297,7 +297,7 @@
                                 Aperçu A4 Direct
                             </h3>
 
-                            <p class="text-xs font-semibold text-neutral-500 mt-3 leading-relaxed">
+                            <p class="text-xs md:text-base font-medium text-neutral-500 mt-3 leading-relaxed">
                                 Visualisez instantanément le rendu de votre CV au format A4
                                 pendant que vous le créez.
                             </p>
@@ -319,7 +319,7 @@
                                 Export PDF & JSON
                             </h3>
 
-                            <p class="text-xs font-semibold text-neutral-500 mt-3 leading-relaxed">
+                            <p class="text-xs md:text-base font-medium text-neutral-500 mt-3 leading-relaxed">
                                 Exportez votre CV en PDF prêt à l'emploi ou sauvegardez vos
                                 données en JSON pour les réutiliser plus tard.
                             </p>
@@ -346,7 +346,7 @@
         </section>
 
         <!-- 5. PROCESSUS À 3 ÉTAPES -->
-        <section class="bg-white border-y-2 border-neutral-200 py-20">
+        <section class="bg-white border-y-2 border-neutral-200 py-20 md:py-50">
             <div class="max-w-6xl mx-auto px-4">
 
                 <div class="text-center mb-16" use:reveal>
@@ -386,7 +386,7 @@
                                     Saisissez vos données
                                 </h3>
 
-                                <p class="text-xs font-semibold text-neutral-500 leading-relaxed">
+                                <p class="text-xs md:text-base font-medium text-neutral-500 leading-relaxed">
                                     Remplissez vos informations personnelles, vos compétences
                                     et diplômes via des formulaires guidés.
                                 </p>
@@ -401,7 +401,7 @@
                                     Optimisez le Score ATS
                                 </h3>
 
-                                <p class="text-xs font-semibold text-neutral-500 leading-relaxed">
+                                <p class="text-xs md:text-base font-medium text-neutral-500 leading-relaxed">
                                     Suivez les recommandations en temps réel pour améliorer
                                     la structure et le contenu de votre CV.
                                 </p>
@@ -416,7 +416,7 @@
                                     Exportez en 1-Clic
                                 </h3>
 
-                                <p class="text-xs font-semibold text-neutral-500 leading-relaxed">
+                                <p class="text-xs md:text-base font-medium text-neutral-500 leading-relaxed">
                                     Téléchargez votre CV au format PDF et obtenez un document
                                     prêt à envoyer.
                                 </p>
@@ -429,7 +429,7 @@
         </section>
 
         <!-- 5. COMPARATIF : POURQUOI ATS-FRIENDLY (NOUVEAU) -->
-        <section class="max-w-6xl mx-auto px-4 py-20">
+        <section class="max-w-6xl mx-auto px-4 py-20 md:py-50">
             <div class="text-center mb-16" use:reveal>
                 <h2 class="text-xs font-black text-neutral-500 uppercase tracking-widest mb-2">Comparatif</h2>
                 <p class="text-2xl sm:text-4xl font-black text-black uppercase tracking-tight">Pourquoi la structure importe</p>
@@ -452,7 +452,7 @@
                                 </h3>
                             </div>
 
-                            <ul class="space-y-3 text-xs font-semibold text-neutral-600">
+                            <ul class="space-y-3 text-xs md:text-base font-medium text-neutral-600">
                                 <li class="flex items-start gap-2">
                                     <span class="text-red-500">•</span>
                                     Colonnes multiples non lues par les logiciels
@@ -481,7 +481,7 @@
                                 </h3>
                             </div>
 
-                            <ul class="space-y-3 text-xs font-semibold text-neutral-600">
+                            <ul class="space-y-3 text-xs md:text-base font-medium text-neutral-600">
                                 <li class="flex items-start gap-2">
                                     <span class="text-emerald-600 font-bold">•</span>
                                     Hiérarchie claire et balisage sémantique
@@ -517,7 +517,7 @@
         </section>
 
         <!-- 6. FAQ ACCORDÉON (ANIMÉ) -->
-        <section class="bg-white border-t-2 border-neutral-200 py-20">
+        <section class="bg-white border-t-2 border-neutral-200 py-20 md:py-50">
             <div class="max-w-6xl mx-auto px-4">
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
@@ -567,7 +567,7 @@
 
                                     {#if openFaq === i}
                                         <div
-                                            class="px-6 pb-6 text-xs font-semibold text-neutral-500 leading-relaxed border-t border-neutral-100 pt-4"
+                                            class="px-6 pb-6 text-xs md:text-base font-medium text-neutral-500 leading-relaxed border-t border-neutral-100 pt-4"
                                             transition:slide
                                         >
                                             {faq.a}
