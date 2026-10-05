@@ -161,7 +161,7 @@
 
     <main class="w-full">
         <!-- 1. HERO SECTION -->
-        <section class="max-w-6xl mx-auto px-4 py-16 md:py-24" use:reveal>
+        <section class="max-w-6xl mx-auto px-4 py-16 md:py-24 h-screen flex" use:reveal>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- Colonne gauche : texte et boutons -->
                 <div class="text-left">
@@ -244,7 +244,7 @@
         <MobileInstallSection />
 
         <!-- 4. AVANTAGES -->
-        <section id="features" class="max-w-6xl mx-auto px-4 py-20">
+        <section id="features" class="max-w-6xl mx-auto px-4 py-20 md:py-50">
             <div class="text-center mb-12" use:reveal>
                 <h2 class="text-xs font-black text-neutral-500 uppercase tracking-widest mb-2">
                     Avantages
@@ -346,7 +346,7 @@
         </section>
 
         <!-- 5. PROCESSUS À 3 ÉTAPES -->
-        <section class="bg-white border-y-2 border-neutral-200 py-20">
+        <section class="bg-white border-y-2 border-neutral-200 py-20 md:py-50">
             <div class="max-w-6xl mx-auto px-4">
 
                 <div class="text-center mb-16" use:reveal>
@@ -429,7 +429,7 @@
         </section>
 
         <!-- 5. COMPARATIF : POURQUOI ATS-FRIENDLY (NOUVEAU) -->
-        <section class="max-w-6xl mx-auto px-4 py-20">
+        <section class="max-w-6xl mx-auto px-4 py-20 md:py-50">
             <div class="text-center mb-16" use:reveal>
                 <h2 class="text-xs font-black text-neutral-500 uppercase tracking-widest mb-2">Comparatif</h2>
                 <p class="text-2xl sm:text-4xl font-black text-black uppercase tracking-tight">Pourquoi la structure importe</p>
@@ -517,7 +517,7 @@
         </section>
 
         <!-- 6. FAQ ACCORDÉON (ANIMÉ) -->
-        <section class="bg-white border-t-2 border-neutral-200 py-20">
+        <section class="bg-white border-t-2 border-neutral-200 py-20 md:py-50">
             <div class="max-w-6xl mx-auto px-4">
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
