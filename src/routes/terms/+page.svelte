@@ -151,7 +151,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">1</span>
                                 Acceptation des conditions
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed">
                                 En accédant à CVita et en utilisant ses services, vous reconnaissez avoir lu, compris et accepté sans réserve les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, nous vous invitons à ne pas utiliser le service.
                             </p>
                         </div>
@@ -164,10 +164,10 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">2</span>
                                 Description du service
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed mb-4">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed mb-4">
                                 CVita est un outil en ligne permettant de créer, prévisualiser et exporter des CV au format PDF. Le service est fourni <strong class="text-black">gratuitement</strong>, <strong class="text-black">sans inscription obligatoire</strong> et repose sur un traitement <strong class="text-black">100% local</strong> des données.
                             </p>
-                            <ul class="space-y-2 text-sm font-semibold text-neutral-600">
+                            <ul class="space-y-2 text-sm md:text-base font-medium text-neutral-600">
                                 <li class="flex items-start gap-2">
                                     <Icon icon="mdi:check-circle" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                                     Création de CV compatible ATS
@@ -195,10 +195,10 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">3</span>
                                 Accès et utilisation
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed mb-4">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed mb-4">
                                 L'utilisateur s'engage à utiliser CVita de manière loyale et conforme à la législation en vigueur. Il est notamment interdit de :
                             </p>
-                            <ul class="space-y-2 text-sm font-semibold text-neutral-600">
+                            <ul class="space-y-2 text-sm md:text-base font-medium text-neutral-600">
                                 <li class="flex items-start gap-2">
                                     <Icon icon="mdi:close-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                                     Tenter de contourner ou de perturber le fonctionnement du service
@@ -226,7 +226,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">4</span>
                                 Données personnelles
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed mb-4">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed mb-4">
                                 CVita applique un principe de <strong class="text-black">minimisation des données</strong>. Aucune information saisie dans l'éditeur n'est transmise ni stockée sur nos serveurs.
                             </p>
                             <div class="bg-neutral-50 border-2 border-neutral-200 rounded-xl p-4">
@@ -234,7 +234,7 @@
                                     <Icon icon="mdi:shield-lock" class="w-5 h-5 text-black shrink-0 mt-0.5" />
                                     <div>
                                         <p class="text-xs font-black uppercase tracking-wider text-black mb-1">Stockage local uniquement</p>
-                                        <p class="text-xs font-semibold text-neutral-600 leading-relaxed">
+                                        <p class="text-xs md:text-sm font-medium text-neutral-600 leading-relaxed">
                                             Toutes vos données (informations personnelles, expériences, compétences...) sont enregistrées exclusivement dans le <strong>LocalStorage de votre navigateur</strong>. Vous pouvez les effacer à tout moment en vidant le cache de votre navigateur.
                                         </p>
                                     </div>
@@ -250,7 +250,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">5</span>
                                 Propriété intellectuelle
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed mb-4">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed mb-4">
                                 Le nom <strong class="text-black">CVita</strong>, son logo, son design, son code source et l'ensemble des éléments graphiques sont la propriété exclusive de l'éditeur. Toute reproduction, même partielle, sans autorisation écrite préalable est interdite. Les CV générés par l'utilisateur lui appartiennent intégralement et il en dispose librement.
                             </p>
 
@@ -260,7 +260,7 @@
                                     <Icon icon="mdi:code-tags" class="w-5 h-5 text-black shrink-0 mt-0.5" />
                                     <div>
                                         <p class="text-xs font-black uppercase tracking-wider text-black mb-1">Développement</p>
-                                        <p class="text-xs font-semibold text-neutral-600 leading-relaxed">
+                                        <p class="text-xs md:text-sm font-medium text-neutral-600 leading-relaxed">
                                             Ce site a été conçu et développé par l'agence
                                             <a
                                                 href="https://kleonix.netlify.app"
@@ -293,10 +293,10 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">6</span>
                                 Limitation de responsabilité
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed">
                                 CVita est fourni <strong class="text-black">« en l'état »</strong>, sans garantie d'aucune sorte, expresse ou implicite. Nous ne saurions être tenus responsables :
                             </p>
-                            <ul class="mt-4 space-y-2 text-sm font-semibold text-neutral-600">
+                            <ul class="mt-4 space-y-2 text-sm md:text-base font-medium text-neutral-600">
                                 <li class="flex items-start gap-2">
                                     <span class="text-neutral-400 font-black">→</span>
                                     D'une perte de données liée à la suppression du cache navigateur
@@ -324,7 +324,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">7</span>
                                 Disponibilité du service
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed">
                                 Nous nous efforçons de maintenir CVita accessible 24h/24 et 7j/7. Toutefois, le service peut être interrompu temporairement pour maintenance, mise à jour ou en cas de force majeure, sans que cela n'ouvre droit à une quelconque indemnisation.
                             </p>
                         </div>
@@ -337,7 +337,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">8</span>
                                 Modification des conditions
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed">
                                 CVita se réserve le droit de modifier les présentes conditions à tout moment. Les utilisateurs sont invités à consulter régulièrement cette page. La date de dernière mise à jour est indiquée en haut du document. La poursuite de l'utilisation du service après modification vaut acceptation des nouvelles conditions.
                             </p>
                         </div>
@@ -350,7 +350,7 @@
                                 <span class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs font-black shrink-0">9</span>
                                 Droit applicable
                             </h2>
-                            <p class="text-sm font-semibold text-neutral-600 leading-relaxed">
+                            <p class="text-sm md:text-base font-medium text-neutral-600 leading-relaxed">
                                 Les présentes conditions sont régies par le droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français seront seuls compétents pour connaître du différend.
                             </p>
                         </div>
