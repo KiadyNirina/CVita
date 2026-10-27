@@ -797,4 +797,61 @@
             </div>
         </section>
     {/if}
+
+    <!-- ========================================================= -->
+    <!-- HOBBIES / SIDE QUESTS -->
+    <!-- ========================================================= -->
+
+    {#if data.hobbies?.length > 0}
+        <section class="cv-section mt-7">
+            <div
+                class="cv-section-title mb-4 flex items-center gap-3"
+            >
+                <div
+                    class="flex h-8 w-8 shrink-0 rotate-[4deg] items-center justify-center border-[2px] border-[#171717] bg-[#f28c28] text-[8px] font-black"
+                >
+                    08
+                </div>
+
+                <div
+                    class="bg-[#171717] px-4 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-white"
+                >
+                    Side Quests
+                </div>
+
+                <div class="h-[3px] flex-1 bg-[#171717]"></div>
+
+                <span
+                    class="rotate-[-3deg] border-2 border-[#171717] bg-[#e53e24] px-2 py-1 text-[7px] font-black text-white"
+                >
+                    HOBBY
+                </span>
+            </div>
+
+            <div
+                class="cv-section-items flex flex-wrap gap-2"
+            >
+                {#each data.hobbies as hobby, index}
+                    <div
+                        class="cv-item relative flex items-center gap-1.5 border-[3px] border-[#171717] bg-white px-3 py-1.5 text-[8px] font-black uppercase"
+                        style="transform: rotate({(index % 2 === 0 ? -1 : 1)}deg);"
+                    >
+                        <span
+                            class="flex h-4 w-4 shrink-0 items-center justify-center bg-[#f28c28] text-[6px] font-black text-[#171717]"
+                        >
+                            {String(index + 1).padStart(2, '0')}
+                        </span>
+
+                        {#if hobby.icon}
+                            <Icon icon={hobby.icon} class="h-3 w-3" />
+                        {/if}
+
+                        <span class="truncate">
+                            {hobby.name}
+                        </span>
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
 </div>

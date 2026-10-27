@@ -605,4 +605,45 @@
             </div>
         </section>
     {/if}
+
+    <!-- ========================================================= -->
+    <!-- LOISIRS -->
+    <!-- ========================================================= -->
+
+    {#if data.hobbies?.length > 0}
+        <section class="cv-section mb-6">
+            <div
+                class="cv-section-title mb-4 flex items-center gap-3"
+            >
+                <span
+                    class="text-2xl italic text-[#b98b9b]"
+                >
+                    08
+                </span>
+
+                <h2
+                    class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4a3540]"
+                >
+                    Loisirs & Centres d'intérêt
+                </h2>
+
+                <div class="h-px flex-1 bg-[#d9c7ce]"></div>
+            </div>
+
+            <div
+                class="cv-section-items flex flex-wrap gap-2"
+            >
+                {#each data.hobbies as hobby}
+                    <div
+                        class="cv-item inline-flex items-center gap-1.5 rounded-full border border-[#c8a9b5] bg-[#f5eaee] px-3.5 py-1.5 text-xs font-semibold text-[#654655]"
+                    >
+                        {#if hobby.icon}
+                            <Icon icon={hobby.icon} class="h-3.5 w-3.5 text-[#8c6173]" />
+                        {/if}
+                        {hobby.name}
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
 </div>

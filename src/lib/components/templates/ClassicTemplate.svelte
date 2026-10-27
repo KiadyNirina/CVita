@@ -225,4 +225,22 @@
             </div>
         </section>
     {/if}
+
+    {#if data.hobbies && data.hobbies.length > 0}
+        <section class="mb-6">
+            <h2 class="text-xs font-black uppercase tracking-widest text-black border-b-2 border-neutral-200 pb-1 mb-3">
+                Loisirs & Centres d'intérêt
+            </h2>
+            <div class="flex flex-wrap gap-1.5">
+                {#each data.hobbies as hobby}
+                    <span class="inline-flex items-center gap-1.5 bg-neutral-100 text-neutral-900 border border-neutral-300 font-bold px-2.5 py-1 rounded-md text-xs">
+                        {#if hobby.icon}
+                            <Icon icon={hobby.icon} class="w-3.5 h-3.5 text-black" />
+                        {/if}
+                        {hobby.name}
+                    </span>
+                {/each}
+            </div>
+        </section>
+    {/if}
 </div>

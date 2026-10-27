@@ -6,6 +6,7 @@
     import ExperienceSection from '$lib/components/ExperienceSection.svelte';
     import EducationSection from '$lib/components/EducationSection.svelte';
     import LanguagesSection from '$lib/components/LanguagesSection.svelte';
+    import HobbiesSection from '$lib/components/HobbiesSection.svelte';
     import Preview from '$lib/components/Preview.svelte';
     import ATSScore from '$lib/components/ATSScore.svelte';
     import ExportButtons from '$lib/components/ExportButtons.svelte';
@@ -242,6 +243,7 @@
                             <ExperienceSection />
                             <EducationSection />
                             <LanguagesSection />
+                            <HobbiesSection />
                         </div>
 
                     </div>

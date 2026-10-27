@@ -523,4 +523,42 @@
             </div>
         </section>
     {/if}
+
+    <!-- ========================================================= -->
+    <!-- LOISIRS -->
+    <!-- ========================================================= -->
+
+    {#if data.hobbies?.length > 0}
+        <section class="cv-section mt-7">
+            <div class="mb-4 flex items-center gap-3">
+                <span class="text-[10px] font-black tracking-[0.2em] text-[#b16f80]">
+                    08
+                </span>
+
+                <h2
+                    class="cv-section-title text-[11px] font-black uppercase tracking-[0.2em] text-[#302a2c]"
+                >
+                    Loisirs & Centres d'intérêt
+                </h2>
+
+                <div class="h-px flex-1 bg-[#dfc8cc]"></div>
+
+                <Icon
+                    icon="mdi:flower-outline"
+                    class="h-4 w-4 text-[#c48696]"
+                />
+            </div>
+
+            <div class="cv-section-items flex flex-wrap gap-2">
+                {#each data.hobbies as hobby}
+                    <div class="cv-item inline-flex items-center gap-1.5 rounded-full border border-[#dfc0c7] bg-[#f8edef] px-3.5 py-1.5 text-[10px] font-semibold text-[#7a5561]">
+                        {#if hobby.icon}
+                            <Icon icon={hobby.icon} class="h-3.5 w-3.5 text-[#b16f80]" />
+                        {/if}
+                        {hobby.name}
+                    </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
 </div>
