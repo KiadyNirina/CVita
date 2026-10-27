@@ -839,4 +839,67 @@
 
     {/if}
 
+    <!-- ========================================================= -->
+    <!-- LOISIRS                                                    -->
+    <!-- ========================================================= -->
+
+    {#if data.hobbies?.length > 0}
+
+        <section class="cv-section mb-6">
+
+            <!-- Section header -->
+
+            <div class="mb-4 flex items-center gap-3">
+
+                <div
+                    class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white"
+                >
+
+                    <Icon
+                        icon="mdi:heart-outline"
+                        class="h-4 w-4"
+                    />
+
+                </div>
+
+
+                <h2
+                    class="cv-section-title text-[11px] font-black uppercase tracking-[0.18em] text-slate-900"
+                >
+                    Loisirs & Centres d'intérêt
+                </h2>
+
+
+                <div class="h-px flex-1 bg-slate-200"></div>
+
+            </div>
+
+
+            <div
+                class="cv-section-items flex flex-wrap gap-1.5"
+            >
+
+                {#each data.hobbies as hobby}
+
+                    <div class="cv-item">
+
+                        <span
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700"
+                        >
+                            {#if hobby.icon}
+                                <Icon icon={hobby.icon} class="h-3.5 w-3.5 text-slate-500" />
+                            {/if}
+                            {hobby.name}
+                        </span>
+
+                    </div>
+
+                {/each}
+
+            </div>
+
+        </section>
+
+    {/if}
+
 </div>
