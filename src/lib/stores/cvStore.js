@@ -17,6 +17,7 @@ const initialCV = {
     languages: [],
     certifications: [],
     projects: [],
+    hobbies: [],
     selectedTemplate: 'classic'
 };
 
@@ -39,7 +40,8 @@ export const resetCV = () => {
         skills: [],
         languages: [],
         certifications: [],
-        projects: []
+        projects: [],
+        hobbies: []
     });
 };
 
